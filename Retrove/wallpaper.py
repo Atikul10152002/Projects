@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
 """
-Wall creator by Mohammad
 """
 
+from __future__ import print_function
 import os
 import sys
 import time
@@ -17,15 +17,16 @@ DEFAULT_WALL_WIDTH = 400
 DEFAULT_WALL_HEIGHT = 800
 
 try:
-    arg_names = ['Command', 'repetition', 'scree_width', 'screen_height']
+    arg_names = ['Command', 'scree_width', 'screen_height', 'repetition']
     args = dict(zip(arg_names, sys.argv))
-    # print(args)
+    print(args)
 
-    repetition = int(sys.argv[1]) if 'repetition' in args.keys() else 20
-    width = int(sys.argv[2]) if 'scree_width' and 'screen_height' in args.keys(
-    ) else DEFAULT_WALL_WIDTH
-    height = int(sys.argv[3]) if 'scree_width' and 'screen_height' in args.keys(
-    ) else DEFAULT_WALL_HEIGHT
+    width = int(sys.argv[1]) if 'scree_width' and 'screen_height' \
+        in args.keys() else DEFAULT_WALL_WIDTH
+    height = int(sys.argv[2]) if 'scree_width' and 'screen_height' \
+        in args.keys() else DEFAULT_WALL_HEIGHT
+    repetition = int(sys.argv[3]) if 'repetition' \
+        in args.keys() else 20
 
 except Exception as e:
     if os.name != 'nt':
@@ -100,6 +101,7 @@ try:
 
     wall_num = 0
     for i in range(10):
+        # while 1:
         putToScreen = DrawingInImage()
         list(map(lambda x: putToScreen.drawLine(), range(1000)))
         list(map(lambda x: putToScreen.drawPolygon(), range(repetition)))

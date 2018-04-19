@@ -11,6 +11,7 @@ import sys
 from variables import *
 from spritesheet import spritesheet
 
+
 pygame.init()
 pygame.font.init()
 playMusic()
@@ -20,7 +21,8 @@ joystick_working = True
 try:
     pygame.joystick.init()
     joysticks = [pygame.joystick.Joystick(x)
-                 for x in range(pygame.joystick.get_count())]
+                 for x in range(
+                     pygame.joystick.get_count())]
     jstick = joysticks[0]
     jstick.init()
 except Exception as E:
@@ -28,10 +30,8 @@ except Exception as E:
     print(E, "joysticks not found")
 
 
-####################################################################
-
 class Block(pygame.sprite.Sprite):
-    def __init__(self, color, image=None):
+    def __init__(self, color, triangular_mode, image=None):
         super().__init__()
         self.color = color
         if image == None:
@@ -42,25 +42,15 @@ class Block(pygame.sprite.Sprite):
             self.image = image
 
         self.rect = self.image.get_rect()
-        self.rect.x = random.randrange(screenWidth)
+        self.rect.x = random.triangular(0, screenWidth, triangular_mode)
         self.rect.y = -random.randrange(screenHeight)
 
     def update(self):
-        if self.rect.y < 50 and self.rect.y > -10 or self.rect.y > screenHeight-100:
+        if self.rect.y < 50 and self.rect.y >\
+                -10 or self.rect.y > screenHeight-100:
             self.rect.y += speed * 3
         else:
             self.rect.y += speed
-
-        # self.rect.x += round(speed/2)
-
-    # def switchLeft(self):
-    #     self.rect.x -= round(speed / 2)
-
-    # def switchRight(self):
-    #     self.rect.x += round(speed / 2)
-
-
-####################################################################
 
 
 class BackgroundImage:
@@ -84,17 +74,13 @@ class Player(pygame.sprite.Sprite):
             self.image = image
         else:
             self.image = pygame.Surface(
-                [player_width, player_height], pygame.SRCALPHA, 32).convert_alpha()
-        # self.image = pygame.Surface([player.rect.height,player.rect.width])
-        # self.image.blit(self.ximage, self.image.get_rect(),
-        #                 (0, 0, self.width, self.height))
-        # self.image.set_colorkey(BLACK)
+                [player_width, player_height],
+                pygame.SRCALPHA, 32).convert_alpha()
+
         self.rect = self.image.get_rect()
-        self.rect.y = screenHeight - self.rect.height - player_up_from_bottom
+        self.rect.y = screenHeight - self.rect.height - \
+            player_up_from_bottom
         self.rect.x = screenWidth / 2
-
-
-####################################################################
 
 
 class Bullet(pygame.sprite.Sprite):
@@ -108,8 +94,6 @@ class Bullet(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = player.rect.center
         self.rect.y -= player.rect.height
-        # self.rect.y = player.rect.bottom
-        # print(player.rect.center, player.rect.bottom)
 
     def update(self):
         self.rect.y -= bullet_speed * 1.5
@@ -123,16 +107,13 @@ class Bullet(pygame.sprite.Sprite):
         self.rect.x += bullet_speed
 
 
-####################################################################
-
-
 class WriteToScreen():
     def __init__(self, msg, color, font_size):
         self.msg = msg
         self.color = color
         self.font_size = font_size
         self.myfont = pygame.font.Font(
-            "images/Chunkfive.otf", self.font_size, bold=True)
+            os.path.join(images_wd, "Chunkfive.otf"), self.font_size, bold=True)
         self.font_render = self.myfont.render(self.msg, 1, self.color)
         self.rect = self.font_render.get_rect()
 
@@ -141,28 +122,35 @@ class WriteToScreen():
 
     def center(msg, color, font_size, center_of_rect):
         myfont = pygame.font.Font(
-            "images/Chunkfive.otf", font_size)
+            os.path.join(images_wd, "Chunkfive.otf"), font_size)
         font_render = myfont.render(msg, 1, color)
         font_rect = font_render.get_rect()
         font_rect.center = center_of_rect
         screen.blit(font_render, font_rect)
 
 
-####################################################################
+# player = Player()
+player = Player()
+player_list.add(player)
+allSpritesList.add(player)
+# print(player.rect.width, player.rect.height)
+
+player_anim = spritesheet(player_sprite_image_des, 2, 1)
+llama = spritesheet(llama_image_des, 6, 1)
 
 
 def createBlocks(create_powerup=None):
     global block, powerup
     if create_powerup == None:
-        block = Block(random.choice(block_color_list))
+        block = Block(random.choice(block_color_list), player.rect.x)
         block_list.add(block)
         allSpritesList.add(block)
     elif create_powerup == "powerup":
-        powerup = Block(REALLYRED, powerup_image_des)
+        powerup = Block(REALLYRED, screenWidth/2, powerup_image_des)
         powerupList.add(powerup)
         allSpritesList.add(powerup)
     elif create_powerup == "powerup2":
-        powerup2 = Block(BLACK, powerup2_image_des)
+        powerup2 = Block(BLACK, screenWidth/2,  powerup2_image_des)
         powerupList2.add(powerup2)
         allSpritesList.add(powerup2)
 
@@ -209,21 +197,6 @@ def index_change(FPS, reset_index):
     # print (reset_index.cols)
 
 
-####################################################################
-
-
-# player = Player()
-player = Player()
-player_list.add(player)
-allSpritesList.add(player)
-# print(player.rect.width, player.rect.height)
-
-player_anim = spritesheet(player_sprite_image_des, 2, 1)
-llama = spritesheet(llama_image_des, 6, 1)
-
-
-####################################################################
-
 class loopFunc():
 
     def retryPowerup2Loop(self, powerup2):
@@ -260,7 +233,8 @@ def retry_the_game():
 
 
 def highscorePageDisplay():
-    global highscore_page, name, sortedHighkeyList, sorted_highValue_list
+    global highscore_page, name, sortedHighkeyList, \
+        sorted_highValue_list
     highscore_page = True
 
     while highscore_page:
@@ -301,12 +275,10 @@ def highscorePageDisplay():
                 highscoreOrgList.keys(), reverse=True)
             sorted_highValue_list = [highscoreOrgList[key]
                                      for key in sortedHighkeyList]
-            WriteToScreen.center(sorted_highValue_list[i] + "_" *
-                                 length_of_dash +
-                                 str(sortedHighkeyList[i]
-                                     ), highscore_text_color,
-                                 high_size_list, ((screenWidth / 2),
-                                                  start_of_high_dis_list))
+            WriteToScreen.center(
+                sorted_highValue_list[i] + "_" * length_of_dash +
+                str(sortedHighkeyList[i]), highscore_text_color,
+                high_size_list, ((screenWidth / 2), start_of_high_dis_list))
 
         WriteToScreen.center(
             "Highscore: ", BLACK, 40, (screenWidth / 2, 50))
@@ -340,14 +312,13 @@ def button(msg, x, y, w, h, ic, ac, action=None):
     else:
         pygame.draw.rect(screen, ac, (x, y, w, h))
     if msg != "blank":
-        WriteToScreen.center(msg, WHITE, 25, ((x + (w / 2)), (y + (h / 2))))
-
-
-####################################################################
+        WriteToScreen.center(msg, WHITE, 25,
+                             ((x + (w / 2)), (y + (h / 2))))
 
 
 def intro(exname=None):
-    global name, highscore_name, highscore, later_name, cur_pos, num_pos
+    global name, highscore_name, highscore, \
+        later_name, cur_pos
 
     intro_background = BackgroundImage(background_image[0])
 
@@ -383,7 +354,7 @@ def intro(exname=None):
                 # quit()
                 pass
             if jstick.get_button(1):
-                highscore_paget_num = True
+                # highscore_paget_num = True
                 highscorePageDisplay()
 
         for event in pygame.event.get():
@@ -407,8 +378,10 @@ def intro(exname=None):
                     cur_pos = 0 if cur_pos > 3 else cur_pos
                     t_num[cur_pos] -= 1
 
-                    team_number = str(abs(t_num[0])) + str(abs(t_num[1])) + \
-                        str(abs(t_num[2])) + str(abs(t_num[3]))
+                    team_number = str(abs(t_num[0])) + \
+                        str(abs(t_num[1])) + \
+                        str(abs(t_num[2])) + \
+                        str(abs(t_num[3]))
                     name = team_number
 
             if event.type == KEYDOWN:
@@ -427,42 +400,50 @@ def intro(exname=None):
         if score > highscore:
             highscore = score
             highscore_name = name
-        dis_name = name if len(name) > 0 else str(replace_name) + name
+        dis_name = name if len(name) > 0 \
+            else str(replace_name) + name
 
-        Intro_title = WriteToScreen.center(dis_name, Intro_title_color, 100,
-                                           ((screenWidth / 2), (screenHeight / 2)))
-        Intro_title_credit = WriteToScreen.center("Soknorobo", Intro_title_credit_color, 20,
-                                                  ((screenWidth / 2),
-                                                   (screenHeight / 2) + 50))
+        Intro_title = WriteToScreen.center(
+            dis_name, Intro_title_color, 100,
+            ((screenWidth / 2), (screenHeight / 2)))
+        Intro_title_credit = WriteToScreen.center(
+            "Soknorobo", Intro_title_credit_color, 20,
+            ((screenWidth / 2), (screenHeight / 2) + 50))
 
         button("((>", (screenWidth - (screenWidth / 100) * 12),
-               10, 70, 70, Btn_highlight_color, Quit_btn_color, "vol_neg")
+               10, 70, 70, Btn_highlight_color,
+               Quit_btn_color, "vol_neg")
         button("<))", (screenWidth - (screenWidth / 100) * 6),
-               10, 70, 70, Btn_highlight_color, Quit_btn_color, "vol_pos")
+               10, 70, 70, Btn_highlight_color,
+               Quit_btn_color, "vol_pos")
         button("QUIT", (screenWidth / 100) * 19,
-               650, 150, 70, Btn_highlight_color, Quit_btn_color, "quit")
+               650, 150, 70, Btn_highlight_color,
+               Quit_btn_color, "quit")
         button("HIGHSCORE", (screenWidth / 100) * 44,
-               650, 180, 70, Btn_highlight_color, Highscore_btn_color, "more")
+               650, 180, 70, Btn_highlight_color,
+               Highscore_btn_color, "more")
         button("START", (screenWidth / 100) * 69,
-               650, 150, 70, Btn_highlight_color, Start_btn_color, "play")
+               650, 150, 70, Btn_highlight_color,
+               Start_btn_color, "play")
 
         Highscore_to_Display = WriteToScreen(
             "Highscore: " + str(highscore), BLACK, 40)
         Highscore_to_Display.Blit([10, 10])
-        Score_to_Display = WriteToScreen(("Score: " + str(score)), BLACK, 20)
+        Score_to_Display = WriteToScreen(("Score: " +
+                                          str(score)), BLACK, 20)
         Score_to_Display.Blit(([10, 50]))
         # pygame.draw.circle(screen, (0, 127, 255),
-        #                    (screenWidth // 2, screenHeight // 3), 80, 1)
+        #                    (screenWidth // 2,
+        #                     screenHeight // 3), 80, 1)
         pygame.display.update()
 
 
-####################################################################
-
-
 def gameloop():
-    global done, xVel, yVel, speed, score, globalxVel, globalVel, \
-        elasped, start, lives, elaspedTotalTime, BK_color, FirstStart, \
-        highscore, powerup, powerup2, machineGunNum, sartMachineGun, \
+    global done, xVel, yVel, speed, score, \
+        globalxVel, globalVel, elasped, start,\
+        lives, elaspedTotalTime, BK_color, \
+        FirstStart, highscore, powerup, \
+        powerup2, machineGunNum, sartMachineGun, \
         timeCounterPowerup2, increasingSpeed
     done = False
     speed = constant_speed
@@ -472,7 +453,8 @@ def gameloop():
     power_up.play()
     playMusic()
     timeCounterPowerup2 = 0
-    gameloop_background = BackgroundImage(background_image[4])
+    # gameloop_background = BackgroundImage(
+    #     background_image[4])
     FirstStart, start = time.time(), time.time()
 
     try:
@@ -489,12 +471,14 @@ def gameloop():
 
     while not done:
         screen.fill(BK_color)
-        gameloop_background.draw()
+        # gameloop_background.draw()
         clock.tick(35)
         pygame.mouse.set_visible(False)
 
-        player_anim.draw(screen, index % player_anim.totalCellCount,
-                         player.rect.center[0], player.rect.center[1], 4)
+        player_anim.draw(screen, index %
+                         player_anim.totalCellCount,
+                         player.rect.center[0],
+                         player.rect.center[1], 4)
         index_change(5, player_anim)
 
         for event in pygame.event.get():
@@ -513,9 +497,11 @@ def gameloop():
                 if jstick.get_axis(1) > 0.1:
                     yVel = (globalyVel + speed)
 
-                if jstick.get_axis(0) > -.1 and jstick.get_axis(0) < .1:
+                if jstick.get_axis(0) > -.1 and\
+                        jstick.get_axis(0) < .1:
                     xVel = 0
-                if jstick.get_axis(1) > -.1 and jstick.get_axis(1) < .1:
+                if jstick.get_axis(1) > -.1 and \
+                        jstick.get_axis(1) < .1:
                     yVel = 0
                 if jstick.get_button(0):
                     if not machineGunNum:
@@ -541,7 +527,8 @@ def gameloop():
                     done = True
                     xVel, yVel = 0, 0
                     player.rect.y = screenHeight - \
-                        player.rect.height - player_up_from_bottom
+                        player.rect.height - \
+                        player_up_from_bottom
                     player.rect.x = screenWidth / 2
                 if event.key == K_SPACE:
                     if not machineGunNum:
@@ -588,7 +575,8 @@ def gameloop():
                     screenWidth / 10)
                 pygame.time.delay(100)
 
-            if block.rect.bottom > screenHeight - 10 or block.rect.right > screenWidth or block.rect.right < 0:
+            if block.rect.bottom > screenHeight - 10 or \
+                    block.rect.right > screenWidth or block.rect.right < 0:
                 # block.remove(block)
                 block_list.remove(block)
                 allSpritesList.remove(block)
@@ -601,7 +589,7 @@ def gameloop():
             blockHitList = pygame.sprite.spritecollide(
                 bullet, block_list, True)
 
-            # list(map(, list()))
+
             for block in blockHitList:
                 pygame.draw.circle(screen, (0, 127, 255),
                                    block.rect.center, 40, 5)
@@ -611,7 +599,6 @@ def gameloop():
                 score += 100
                 # font_render = myfont.render(str(score),1,WHITE)
                 # print("score:" , score)
-        ####################################################################
 
         # print(machineGunNum)
         for powerup in powerupList:
@@ -637,8 +624,6 @@ def gameloop():
 
                 # font_render = myfont.render(str(score),1,WHITE)
 
-        ####################################################################
-
         # print(machineGunNum)
         for powerup2 in powerupList2:
             playerHitList2 = pygame.sprite.spritecollide(
@@ -652,7 +637,7 @@ def gameloop():
                 score += 100
                 createBlocks("powerup2")
                 sartMachineGun = True
-                PowerupStart2 = round(time.time())
+                # PowerupStart2 = round(time.time())
 
                 pygame.time.delay(0)
                 if lives <= 0:
@@ -692,10 +677,12 @@ def gameloop():
                 bulletList.remove(bullet)
                 allSpritesList.remove(bullet)
 
-        if player.rect.x < 0 or player.rect.x > screenWidth - player.rect.width or \
-                player.rect.y < 0 or player.rect.y > screenHeight - player.rect.height:
+        if player.rect.x < 0 or player.rect.x > screenWidth - \
+                player.rect.width or player.rect.y < 0 or \
+                player.rect.y > screenHeight - player.rect.height:
             xVel, yVel = 0, 0
-            player.rect.y = screenHeight - player.rect.height - player_up_from_bottom
+            player.rect.y = screenHeight - player.rect.height - \
+                player_up_from_bottom
             player.rect.x = screenWidth / 2
             done = True
 
@@ -713,8 +700,10 @@ def gameloop():
                 timeCounterPowerup2 += 1
                 machineGunNum = True
 
-        # print(score, "{", timeCounterPowerup2, sartMachineGun, "}",
-        #   "{", player.rect.x, player.rect.y, '} ', "{ speed:", round(speed, 4), '}')
+        # print(score, "{", timeCounterPowerup2,
+        #       sartMachineGun, "}", "{", player.rect.x,
+        #       player.rect.y, '} ', "{ speed:",
+        #       round(speed, 4), '}')
 
         if lives <= 0:
             shut_down.play()
@@ -726,16 +715,19 @@ def gameloop():
             done = True
 
         speed += increasingSpeed
-        Score_to_Display = WriteToScreen(("Score: " + str(score)), BLACK, 50)
+        Score_to_Display = WriteToScreen(("Score: " +
+                                          str(score)), BLACK, 50)
         Score_to_Display.Blit(([10, 10]))
         highscoreToDisplay = WriteToScreen(
             "Highscore: " + str(highscore), BLACK, 30)
         highscoreToDisplay.Blit([10, 60])
         elaspedTotalTime = round(time.time() - FirstStart, 5)
         elasped_to__display = WriteToScreen(
-            "+" + str(elasped * 10) + "   " + str(elaspedTotalTime), BLACK, 30)
+            "+" + str(elasped * 10) + "   " +
+            str(elaspedTotalTime), BLACK, 30)
         elasped_to__display.Blit([screenWidth - 200, 40])
-        lives_to_display = WriteToScreen("Lives:" + str(lives), BLACK, 30)
+        lives_to_display = WriteToScreen("Lives:" +
+                                         str(lives), BLACK, 30)
         lives_to_display.Blit([screenWidth - 150, 10])
 
         pygame.display.update()
@@ -750,9 +742,11 @@ def gameloop():
             print(len(highscoreOrgList.keys()))
 
             list(map(lambda x: highscoreOrgList.pop(
-                min(highscoreOrgList.keys())), range(len(highscoreOrgList.keys()) - 10)))
-        pickle.dump(highscoreOrgList, open(highscoreFilename,
-                                           "wb"), protocol=pickle.HIGHEST_PROTOCOL)
+                min(highscoreOrgList.keys())),
+                range(len(highscoreOrgList.keys()) - 10)))
+        pickle.dump(highscoreOrgList,
+                    open(highscoreFilename, "wb"),
+                    protocol=pickle.HIGHEST_PROTOCOL)
 
     if score > highscore:
         highscore = score

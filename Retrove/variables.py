@@ -1,13 +1,21 @@
 #!/usr/bin/env python3
+import os
+import sys
 import time
 import pygame
 import pickle
-# from highscores import *
 from music import *
+
 
 pygame.init()
 # import colors
 
+executing_wd = os.path.dirname(os.path.realpath(sys.argv[0]))
+current_wd = os.path.join(executing_wd, "assets")
+highscore_wd = os.path.join(current_wd, ".Highscore")
+images_wd = os.path.join(current_wd, "images")
+ExtraImages_wd = os.path.join(current_wd, "Extra_img")
+backgroundImages_wd = os.path.join(images_wd, "bac")
 
 infoObject = pygame.display.Info()
 # screenWidth, screenHeight = 1600, 900
@@ -22,11 +30,12 @@ screen = pygame.display.set_mode([screenWidth, screenHeight])
 print("Screen Resolution:", screenWidth, screenHeight)
 pygame.display.set_caption(game_display_name)
 
-#  highscore = {45800: 'asdf', 79200: 'Deanna!', 102600: 'Brandon', 22100: 'dadmanofwhitepowers',
-#  23100: 'somaiya', 18900: '', 20900: '', 27900: '', 74400: 'austin', 26600: ''}
+#  highscore = {45800: 'asdf', 79200: 'Deanna!', 102600: 'Brandon',
+#   22100: 'dadmanofwhitepowers', 23100: 'somaiya', 18900: '',
+#   20900: '', 27900: '', 74400: 'austin', 26600: ''}
 
-highscoreFilename = '.Highscore/highscores.pickle'
-backup_highscoreFilename = '.Highscore/bak_highscores.pickle'
+highscoreFilename = os.path.join(highscore_wd, 'highscores.pickle')
+backup_highscoreFilename = os.path.join(highscore_wd, 'bak_highscores.pickle')
 
 try:
     highscore = pickle.load(open(highscoreFilename, "rb"))
@@ -102,42 +111,44 @@ block_width, block_height = 35, 25
 index, r_index = 0, 0
 
 
-allSpritesList = pygame.sprite.Group()  # GROUP OF ALL SPRTIES
-block_list = pygame.sprite.Group()  # GROUP OF ALL BLOCK
-powerupList = pygame.sprite.Group()  # GROUP OF HEALTH POWERUP
-powerupList2 = pygame.sprite.Group()  # GROUP OF MACHINE GUN POWERUP
-bulletList = pygame.sprite.Group()  # GROUP OF BULLETS
-player_list = pygame.sprite.Group()  # GROUP OF PLAYER *TECHNICALLY ONE PLAYER
+allSpritesList = pygame.sprite.Group()
+block_list = pygame.sprite.Group()
+powerupList = pygame.sprite.Group()
+powerupList2 = pygame.sprite.Group()
+bulletList = pygame.sprite.Group()
+player_list = pygame.sprite.Group()
 
 # pygame.transform.scale2x(pygame.image.load(filepath).convert_alpha())
 
 # FILEPATH FOR THE IMAGES
 # Blocks -- >
 powerup_image_des = pygame.transform.scale2x(pygame.image.load(
-    "images/health_powerup.png").convert_alpha())
+    os.path.join(images_wd, "health_powerup.png")).convert_alpha())
 powerup2_image_des = pygame.transform.scale2x(
-    pygame.image.load("images/bullet_powerup.png").convert_alpha())
+    pygame.image.load(os.path.join(images_wd, "bullet_powerup.png")).convert_alpha())
 
 # Assets -- >
 player_image_des = pygame.transform.scale2x(
-    pygame.image.load("images/player_png.png").convert_alpha())
+    pygame.image.load(os.path.join(images_wd, "player_png.png")).convert_alpha())
 bullet_image_des = pygame.transform.scale2x(
-    pygame.image.load("images/bullet3.png").convert_alpha())
+    pygame.image.load(os.path.join(images_wd, "bullet3.png")).convert_alpha())
 test_sub = pygame.transform.scale2x(pygame.image.load(
-    "images/broken_health_powerup.png").convert_alpha())
+    os.path.join(images_wd, "broken_health_powerup.png")).convert_alpha())
 
 # Sprites -- >
 player_sprite_image_des = pygame.image.load(
-    "Extra_img/fatbot.png").convert_alpha()
-llama_image_des = pygame.image.load("images/llama.png").convert_alpha()
+    os.path.join(ExtraImages_wd, "fatbot.png")).convert_alpha()
+llama_image_des = pygame.image.load(
+    os.path.join(images_wd, "llama.png")).convert_alpha()
 
 # backgorunds image to blit -- >
-background_image_list = ["images/bac/memphis-colorful.png",
-                         "images/bac/naturalblack.png",
-                         "images/bac/dark-triangles.png",
-                         "images/bac/gaming-pattern.png",
-                         "images/bac/new_year_background.png"
-                         ]
+background_image_list = [
+    os.path.join(backgroundImages_wd, "memphis-colorful.png"),
+    os.path.join(backgroundImages_wd, "naturalblack.png"),
+    os.path.join(backgroundImages_wd, "dark-triangles.png"),
+    os.path.join(backgroundImages_wd, "gaming-pattern.png"),
+    os.path.join(backgroundImages_wd, "new_year_background.png")
+]
 background_image = [pygame.image.load(filepath)
                     for filepath in background_image_list]
 
@@ -150,7 +161,6 @@ IntroTitleOffset = 200
 done = False
 clock = pygame.time.Clock()
 score, xVel, yVel = 0, 0, 0
-# name = ""
 random_name_gen = "ALPHALT"
 
 # if __name__ == '__main__':

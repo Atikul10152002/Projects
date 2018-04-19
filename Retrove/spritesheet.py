@@ -17,8 +17,9 @@ class spritesheet():
         h = self.cellHeight = int(self.rect_l.height / rows)
         hw, hh = self.cellCenter = (int(w / 2), int(h / 2))
 
-        self.cells = list([(index % cols * w, int(index / cols) * h, w, h)
-                           for index in range(self.totalCellCount)])
+        self.cells = list([
+            (index % cols * w, int(index / cols) * h, w, h)
+            for index in range(self.totalCellCount)])
         self.handle = list([
             (0, 0), (-hw, 0),
             (-w, 0),
@@ -31,6 +32,9 @@ class spritesheet():
         self.rect = self.sheet.get_rect()
 
     def draw(self, surface, cellIndex, x, y, handle=0):
-        self.pos = (x + self.handle[handle][0], y + self.handle[handle][1])
+        self.pos = (x + self.handle[handle][0], y + \
+            self.handle[handle][1])
         surface.blit(
-            self.sheet, (x + self.handle[handle][0], y + self.handle[handle][1]), self.cells[cellIndex])
+            self.sheet, (x + self.handle[handle][0],
+                         y + self.handle[handle][1]), 
+                         self.cells[cellIndex])

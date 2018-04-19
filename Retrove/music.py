@@ -1,18 +1,20 @@
+import os
+import sys
 import pygame
 import random
 pygame.init()
 pygame.mixer.init()
 
+executing_wd = os.path.dirname(os.path.realpath(sys.argv[0]))
+current_wd = os.path.join(executing_wd, "assets")
+music_wd = os.path.join(current_wd, "music")
 
 sounds = []
-
 ALL_SOUNDS = []
+# music_wd = variables.music_wd
 
-# for i in range(1, 4):
-# 	sound = pygame.mixer.Sound(('music/file{}.ogg').format(i))
-# 	sounds.append(sound)
 list(map(lambda x: sounds.append(pygame.mixer.Sound(
-    ('music/File{}.ogg').format(x))), range(1, 4)))
+    (os.path.join(music_wd, 'File{}.ogg').format(x)))), range(1, 4)))
 
 
 def playMusic():
@@ -29,17 +31,18 @@ def playMusic():
 
 playMusic()
 
-shoot = pygame.mixer.Sound("music/Laser_Shoot_low.ogg")
-shootM_gun = pygame.mixer.Sound("music/Laser_Shoot_high.ogg")
-gainedPowerup = pygame.mixer.Sound("music/Beep6.ogg")
-shut_down = pygame.mixer.Sound("music/Shut_Down1.ogg")
-power_up = pygame.mixer.Sound("music/Power_Up1.ogg")
-live_loss = pygame.mixer.Sound("music/Space_Alert1.ogg")
-menu_item_sound = pygame.mixer.Sound("music/Beep1.ogg")
+shoot = pygame.mixer.Sound(os.path.join(music_wd, "Laser_Shoot_low.ogg"))
+shootM_gun = pygame.mixer.Sound(os.path.join(music_wd, "Laser_Shoot_high.ogg"))
+gainedPowerup = pygame.mixer.Sound(os.path.join(music_wd, "Beep6.ogg"))
+shut_down = pygame.mixer.Sound(os.path.join(music_wd, "Shut_Down1.ogg"))
+power_up = pygame.mixer.Sound(os.path.join(music_wd, "Power_Up1.ogg"))
+live_loss = pygame.mixer.Sound(os.path.join(music_wd, "Space_Alert1.ogg"))
+menu_item_sound = pygame.mixer.Sound(os.path.join(music_wd, "Beep1.ogg"))
 
 
 ALL_SOUNDS.extend((shoot, shootM_gun, gainedPowerup,
-                   shut_down, power_up, live_loss, menu_item_sound))
+                   shut_down, power_up,
+                   live_loss, menu_item_sound))
 
 
 def set_all_sounds(vol):
