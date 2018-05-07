@@ -169,12 +169,10 @@ def fireBullet():
 
 def fireBullet_diagonal(side):
     bullet = Bullet(bullet_image_des)
-    # for num in range(5):
     if side.lower() == 'l':
         bullet.left_diagonal()
     elif side.lower() == 'r':
         bullet.right_diagonal()
-    # pos = pygame.mouse.get_pos()
     allSpritesList.add(bullet)
     bulletList.add(bullet)
 
@@ -747,7 +745,6 @@ def gameloop():
         pickle.dump(highscoreOrgList,
                     open(highscoreFilename, "wb"),
                     protocol=pickle.HIGHEST_PROTOCOL)
-
     if score > highscore:
         highscore = score
         rewrite()

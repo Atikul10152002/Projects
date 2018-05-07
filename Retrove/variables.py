@@ -91,7 +91,7 @@ start, FirstStart = time.time(), time.time()
 elasped = 0
 speed = constant_speed = 2.5
 # increasingSpeed = 0.02
-increasingSpeed = 0.005
+increasingSpeed = 0.05
 globalxVel = globalyVel = 7
 bullet_speed = screenHeight / 35
 player_up_from_bottom = 150
