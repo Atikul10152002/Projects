@@ -11,7 +11,6 @@ from PIL import Image, ImageDraw
 import random
 from termcolor import cprint
 
-
 DEFAULT_WALL_WIDTH = 1200
 DEFAULT_WALL_HEIGHT = 800
 
@@ -26,19 +25,7 @@ width = int(sys.argv[1]) if 'scree_width' and 'screen_height' in args.keys(
 ) else DEFAULT_WALL_WIDTH
 height = int(sys.argv[2]) if 'scree_width' and 'screen_height' in args.keys(
 ) else DEFAULT_WALL_HEIGHT
-repetition = int(sys.argv[3]) if 'repetition' in args.keys() else 20
-
-# except Exception as e:
-#     if os.name != 'nt':
-#         os.system('clear')
-#     else:
-#         os.system('cls')
-#     print(
-#         """\nUsage:\n\npython wallpaper.py [options]\n[options] = \n\n""",
-#         """     \'repetition of polygons\', \'scree_width\', \'screen_height\'\n""",
-#         """        <all options should be integers>\n\n""",
-#         """         Ex. python wallpaper.py 100 400 800""")
-
+repetition = int(sys.argv[3]) if 'repetition' in args.keys() else 30
 
 class DrawingInImage:
     def __init__(self):
