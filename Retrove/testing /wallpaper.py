@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 """
+___________BY MOHAMMD ISLAM
 """
 
 from __future__ import print_function
@@ -14,11 +15,9 @@ from termcolor import cprint
 DEFAULT_WALL_WIDTH = 1200
 DEFAULT_WALL_HEIGHT = 800
 
-# try:
 arg_names = ['Command', 'scree_width', 'screen_height', 'repetition']
 args = dict(zip(arg_names, sys.argv))
-# print(args)
-cprint(args, color="white", on_color="on_blue")
+cprint(args, color='cyan')
 
 
 width = int(sys.argv[1]) if 'scree_width' and 'screen_height' in args.keys(
@@ -90,7 +89,6 @@ class DrawingInImage:
 current_wd = os.path.dirname(os.path.realpath(sys.argv[0]))
 walls_directory = os.path.join(current_wd, "walls")
 
-
 wall_num = 0
 for i in range(10):
     # while 1:
@@ -103,10 +101,8 @@ for i in range(10):
     if not os.path.exists(walls_directory):
         os.makedirs(walls_directory)
     filename = os.path.join(walls_directory, 'wall{}.png'.format(wall_num))
-    print(wall_num, "-->", 'wall{}.png'.format(wall_num))
+    cprint(str("{:04}".format(wall_num)) + "-"*(10-len(str(wall_num))) + 'wall{}.png'.format(wall_num), color="grey")
     putToScreen.save(filename)
 
-cprint("Successfully created {} random wallpapers".format(wall_num), color="green", on_color="on_white")
-
-# dir_path = os.path.dirname(os.path.realpath(__file__))
-# print(dir_path)
+cprint("Successfully created {} random wallpapers".format(
+    wall_num), on_color='on_green')
