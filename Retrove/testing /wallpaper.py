@@ -15,15 +15,20 @@ from termcolor import cprint
 DEFAULT_WALL_WIDTH = 1200
 DEFAULT_WALL_HEIGHT = 800
 
-arg_names = ['Command', 'scree_width', 'screen_height', 'repetition']
+arg_names = [
+    'Command', 
+    'scree_width', 
+    'screen_height', 
+    'repetition'
+    ]
 args = dict(zip(arg_names, sys.argv))
 cprint(args, color='cyan')
 
 
-width = int(sys.argv[1]) if 'scree_width' and 'screen_height' in args.keys(
-) else DEFAULT_WALL_WIDTH
-height = int(sys.argv[2]) if 'scree_width' and 'screen_height' in args.keys(
-) else DEFAULT_WALL_HEIGHT
+width = int(sys.argv[1]) if 'scree_width' and 'screen_height' \
+    in args.keys() else DEFAULT_WALL_WIDTH
+height = int(sys.argv[2]) if 'scree_width' and 'screen_height' \
+    in args.keys() else DEFAULT_WALL_HEIGHT
 repetition = int(sys.argv[3]) if 'repetition' in args.keys() else 30
 
 class DrawingInImage:
@@ -101,7 +106,8 @@ for i in range(10):
     if not os.path.exists(walls_directory):
         os.makedirs(walls_directory)
     filename = os.path.join(walls_directory, 'wall{}.png'.format(wall_num))
-    cprint(str("{:04}".format(wall_num)) + "-"*(10-len(str(wall_num))) + 'wall{}.png'.format(wall_num), color="grey")
+    cprint(str("{:04}".format(wall_num)) + "-"*(10-len(str(wall_num))) + \
+        'wall{}.png'.format(wall_num), color="grey")
     putToScreen.save(filename)
 
 cprint("Successfully created {} random wallpapers".format(
