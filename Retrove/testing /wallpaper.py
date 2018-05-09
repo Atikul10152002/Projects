@@ -12,37 +12,40 @@ from PIL import Image, ImageDraw
 import random
 from termcolor import cprint
 
+
 DEFAULT_WALL_WIDTH = 1200
 DEFAULT_WALL_HEIGHT = 800
 
-arg_names = [
-    'Command', 
-    'scree_width', 
-    'screen_height', 
-    'repetition'
-    ]
-args = dict(zip(arg_names, sys.argv))
-cprint(args, color='cyan')
-
-
-width = int(sys.argv[1]) if 'scree_width' and 'screen_height' \
-    in args.keys() else DEFAULT_WALL_WIDTH
-height = int(sys.argv[2]) if 'scree_width' and 'screen_height' \
-    in args.keys() else DEFAULT_WALL_HEIGHT
-repetition = int(sys.argv[3]) if 'repetition' in args.keys() else 30
-
 class DrawingInImage:
+    """
+    This class used to draw images utalizing lines, points and polygaons
+    """
     def __init__(self):
+        self.arg_names = [
+            'Command',
+            'scree_width',
+            'screen_height',
+            'repetition'
+        ]
+        self.args = dict(zip(self.arg_names, sys.argv))
+        self.width = int(sys.argv[1]) if 'scree_width' and 'screen_height' \
+            in self.args.keys() else DEFAULT_WALL_WIDTH
+        self.height = int(sys.argv[2]) if 'scree_width' and 'screen_height' \
+            in self.args.keys() else DEFAULT_WALL_HEIGHT
+        self.repetition = int(sys.argv[3]) if 'repetition' in self.args.keys() else 30
         self.box_width = 10
         self.box_height = 10
         self.im = Image.new('RGB',
-                            (width, height),
+                            (self.width, self.height),
                             color=(0, 0, 0))
         self.draw = ImageDraw.Draw(self.im)
 
     def drawLine(self):
-        self.x_val = random.triangular(-5, width)
-        self.y_val = random.triangular(-5, height)
+        """
+        Draws a line with random x and y coordinate
+        """
+        self.x_val = random.triangular(-5, self.width)
+        self.y_val = random.triangular(-5, self.height)
         self.x2_val = self.x_val + random.randrange(self.box_width)
         self.y2_val = self.y_val + random.randrange(self.box_height)
         self.draw.line([self.x_val, self.y_val, self.x2_val, self.y2_val],
@@ -54,8 +57,8 @@ class DrawingInImage:
         )
 
     def drawPoint(self):
-        self.x_val = random.triangular(-5, width)
-        self.y_val = random.triangular(-5, height)
+        self.x_val = random.triangular(-5, self.width)
+        self.y_val = random.triangular(-5, self.height)
         self.x2_val = self.x_val + random.randrange(self.box_width)
         self.y2_val = self.y_val + random.randrange(self.box_height)
         self.draw.point([self.x_val, self.y_val, self.x2_val, self.y2_val],
@@ -66,8 +69,8 @@ class DrawingInImage:
         )
 
     def drawPolygon(self):
-        self.x_val = random.triangular(-5, width)
-        self.y_val = random.triangular(-5, height)
+        self.x_val = random.triangular(-5, self.width)
+        self.y_val = random.triangular(-5, self.height)
         self.x2_val = self.x_val + random.randrange(self.box_width)
         self.y2_val = self.y_val + random.randrange(self.box_height)
         self.draw.polygon(
@@ -94,21 +97,24 @@ class DrawingInImage:
 current_wd = os.path.dirname(os.path.realpath(sys.argv[0]))
 walls_directory = os.path.join(current_wd, "walls")
 
-wall_num = 0
-for i in range(10):
-    # while 1:
+
+if __name__ == '__main__':    
+    wall_num = 0
     putToScreen = DrawingInImage()
-    list(map(lambda x: putToScreen.drawLine(), range(1000)))
-    list(map(lambda x: putToScreen.drawPolygon(), range(repetition)))
+    for i in range(10):
+        # while 1:
+        list(map(lambda x: putToScreen.drawLine(), range(1000)))
+        list(map(lambda x: putToScreen.drawPolygon(), range(putToScreen.repetition)))
 
-    wall_num += 1
+        wall_num += 1
 
-    if not os.path.exists(walls_directory):
-        os.makedirs(walls_directory)
-    filename = os.path.join(walls_directory, 'wall{}.png'.format(wall_num))
-    cprint(str("{:04}".format(wall_num)) + "-"*(10-len(str(wall_num))) + \
-        'wall{}.png'.format(wall_num), color="grey")
-    putToScreen.save(filename)
+        if not os.path.exists(walls_directory):
+            os.makedirs(walls_directory)
+        filename = os.path.join(walls_directory, 'wall{}.png'.format(wall_num))
+        cprint(str("{:04}".format(wall_num)) + "-"*(10-len(str(wall_num))) + \
+            'wall{}.png'.format(wall_num), color="grey")
+        putToScreen.save(filename)
 
-cprint("Successfully created {} random wallpapers".format(
-    wall_num), on_color='on_green')
+    cprint(putToScreen.args, color='grey', attrs=["bold", "dark"])
+    cprint("Successfully created {} random wallpapers".format(
+        wall_num), on_color='on_green')
