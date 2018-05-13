@@ -1,5 +1,5 @@
 from PIL import Image, ImageDraw
-from random import randrange, triangular
+from random import randrange, triangular, choice
 
 # Can be many different formats.
 imag = Image.open('/Users/atikul/Downloads/626201613142.png')
@@ -23,7 +23,7 @@ def inverse_pixalate_color(pix):
     red = round(triangular(-1, pix[0]))
     green = round(triangular(-1, pix[1]))
     blue = round(triangular(-1, pix[2]))
-    return (red, green, blue)
+    return (choice([(0, 0, 0), (red, green, blue)]))
 
 
 def blue_filter(pix):
@@ -56,12 +56,11 @@ def blacknwhite(pix):
 def filter_im(filtername):
     # print(args)
     global imag, pix
- 
     list(map(lambda y: list(map(lambda x: draw.point([x, y], fill=(
         filtername(pix[x, y]))), range(imag.size[1]))),  range(imag.size[0])))
     imag = im
     pix = imag.load()
-    print(filtername, "Complete")
+    print(str(filtername), "Complete")
 
 
 filter_im(inverse_pixalate_color)
@@ -72,3 +71,4 @@ filter_im(inverse_pixalate_color)
 # filter_im(blacknwhite)
 
 im.save("wall.png")
+im.show()
