@@ -1,16 +1,19 @@
-from PIL import Image, ImageDraw
+from PIL import Image
 from random import randrange, triangular, choice
 
-# Can be many different formats.
-imag = Image.open('/Users/atikul/Downloads/626201613142.png')
+imag = im = Image.open('/Users/atikul/Downloads/626201613142.png')
 pix = imag.load()
 print(imag.size)
 
-im = Image.new('RGB',
-               (imag.size[0], imag.size[1]),
-               color=(0, 0, 0))
-draw = ImageDraw.Draw(im)
+_imag_width = imag.size[0]
+_imag_height = imag.size[1]
 
+
+# im = imag
+# draw = ImageDraw.Draw(im)
+
+# class Filter_image():
+#     def __self__(filename, filtername):
 
 def inverse_color(pix):
     red = 255-pix[0]
@@ -53,17 +56,22 @@ def blacknwhite(pix):
     return (red, green, blue)
 
 
-def filter_im(filtername):
-    # print(args)
-    global imag, pix
-    list(map(lambda y: list(map(lambda x: draw.point([x, y], fill=(
-        filtername(pix[x, y]))), range(imag.size[1]))),  range(imag.size[0])))
-    imag = im
-    pix = imag.load()
-    print(str(filtername), "Complete")
+def Hllp(var):
+    im[var[0], var[1]] = var
 
 
-filter_im(inverse_pixalate_color)
+def filter_im(filtername, x=0, y=0, width=_imag_width, height=_imag_height):
+    """
+    """
+    list(map(lambda y_cord: list(map(lambda x_cord: 
+        im.putpixel((x_cord, y_cord), (filtername(pix[x_cord, y_cord]))),
+        range(round(x),round(x+width)))), range(round(y),round(y+height))))
+    # imag = im
+    # pix = imag.load()
+    print(str(filtername.__name__), "Complete")
+
+
+filter_im(inverse_color, _imag_width/2, _imag_height/2, 200,200)
 # filter_im(blacknwhite)
 # filter_im(blue_filter)
 # filter_im(red_filter)

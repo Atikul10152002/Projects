@@ -102,7 +102,6 @@ if __name__ == '__main__':
     wall_num = 0
     putToScreen = DrawingInImage()
     for i in range(10):
-        # while 1:
         list(map(lambda x: putToScreen.drawLine(), range(1000)))
         list(map(lambda x: putToScreen.drawPolygon(), range(putToScreen.repetition)))
 
@@ -110,11 +109,10 @@ if __name__ == '__main__':
 
         if not os.path.exists(walls_directory):
             os.makedirs(walls_directory)
-        filename = os.path.join(walls_directory, 'wall{}.png'.format(wall_num))
-        cprint(str("{:04}".format(wall_num)) + "-"*(10-len(str(wall_num))) + \
-            'wall{}.png'.format(wall_num), color="grey")
+        filename = os.path.join(walls_directory, f'wall{wall_num}.png')
+        cprint(str(f"{wall_num:05}") + "-"*(10-len(str(wall_num))) +
+               f'wall{wall_num}.png', color="grey")
         putToScreen.save(filename)
 
     cprint(putToScreen.args, color='grey', attrs=["bold", "dark"])
-    cprint("Successfully created {} random wallpapers".format(
-        wall_num), on_color='on_green')
+    cprint(f"Successfully created {wall_num} random wallpapers", on_color='on_green')

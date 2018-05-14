@@ -14,7 +14,7 @@ ALL_SOUNDS = []
 # music_wd = variables.music_wd
 
 list(map(lambda x: sounds.append(pygame.mixer.Sound(
-    (os.path.join(music_wd, 'File{}.ogg').format(x)))), range(1, 4)))
+    (os.path.join(music_wd, f'File{x}.ogg')))), range(1, 4)))
 
 
 def playMusic():
