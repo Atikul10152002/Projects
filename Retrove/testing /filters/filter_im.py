@@ -1,6 +1,7 @@
+import sys
+import time
+from random import choice, triangular
 from PIL import Image
-from random import triangular, choice
-
 
 class Filter_image():
     """
@@ -25,8 +26,13 @@ class Filter_image():
             self.green_filter,
             self.blacknwhite
         ]
-        self.filterdict = dict(zip(self.filterstrings, self.filterfuncs))
-        self.imag = self.im = Image.open(str(filename))
+        self.filterdict = dict(zip(self.filterstrings,
+                                   self.filterfuncs))
+        try:
+            self.imag = self.im = Image.open(str(filename))
+        except Exception as e:
+            print(e, "\n__init__ ERROR ==> Missing File")
+            sys.exit(1)
         self.pix = self.imag.load()
         self.size = self.imag.size
         self._width = self.size[0]
@@ -40,7 +46,7 @@ class Filter_image():
         [\"inverse_pix\", \"blacknwhite\", \"inverse_pix\"], \
         x=0, y=0, width=200, height=400)\n"
 
-    def filter(self, filtername, x=0, y=0, width=0, height=0):
+    def filter(self, filtername, x=0, y=0, width=0, height=0, show_filtered_img=False):
         """
         filter(["inverse_pix", "blacknwhite", "inverse_pix"], \
         x=0, y=0, width=200, height=400) 
@@ -57,21 +63,43 @@ class Filter_image():
         #################
         list of filters
         """
+        start_time = time.time()
         self.x = x
         self.y = y
         self.width = width if width != 0 else self.size[0]
         self.height = height if height != 0 else self.size[1]
         self.filtername = filtername
-        list(map(lambda _filter:
-                 list(map(lambda y_cord:
-                          list(map(lambda x_cord:
-                                   self.im.putpixel((x_cord, y_cord),
-                                                    (self.filterdict[_filter](self.pix[x_cord, y_cord]))),
-                                   range(round(self.x), round(self.x+self.width)))),
-                          range(round(self.y), round(self.y+self.height)))), self.filtername))
+        print(self.size[0]*self.size[1], "Pixels")
+        # self.im.pixels[100,100] = (255,255,255)
+        
+        
+        # massive list and maps
+        for _filter in self.filtername:
+            pixels_arr = [self.filterdict[_filter](self.pix[x_cord, y_cord]) for x_cord in range(round(self.x), min(self.size[0], round(
+                self.x+self.width))) for y_cord in range(round(self.y), min(self.size[1], round(self.y+self.height)))]
+            self.im.putdata(pixels_arr)
+
+        # list(map(
+        #     lambda _filter:
+        #     list(map(
+        #         lambda y_cord:
+        #         list(map(
+        #             lambda x_cord:
+        #             self.im.putpixel((
+        #                 x_cord, y_cord),
+        #                 (self.filterdict[_filter](
+        #                     self.pix[x_cord, y_cord]))),
+        #             range(round(self.x),
+        #                   min(self.size[0], round(self.x+self.width))))),
+        #         range(round(self.y),
+        #               min(self.size[1], round(self.y+self.height))))),
+        #     self.filtername))
+
 
         self.save()
-        print(str(filtername), "Complete")
+        if show_filtered_img == True:
+            self.show()
+        print(str(filtername), "Complete in", time.time()-start_time)
         # print(self.imag.size)
 
     @staticmethod
@@ -88,6 +116,12 @@ class Filter_image():
         green = round(triangular(-1, pix[1]))
         blue = round(triangular(-1, pix[2]))
         return (choice([(0, 0, 0), (red, green, blue)]))
+
+    # def inverse_pixalate_color(pix):
+    #     red = round(triangular(-1, pix[0]))
+    #     green = round(triangular(-1, pix[1]))
+    #     blue = round(triangular(-1, pix[2]))
+    #     return (choice([(0, 0, 0), (red, green, blue)]))
 
     @staticmethod
     def blue_filter(pix):
@@ -136,12 +170,14 @@ class Filter_image():
 
 
 def sample():
-    filter_im = Filter_image("/Users/atikul/Downloads/626201613142.png")
+    filter_im = Filter_image(
+        "/Users/atikul/Downloads/626201613142.png")
 
-    filter_im.filter(["inverse_pix", "blacknwhite"], 0, 0,
-                     filter_im.size[0], filter_im.size[1])
-    filter_im.show()
+    # filter_im.show()
 
+    filter_im.filter(
+        ["inverse_pix", "blacknwhite"], 0, 0,
+        filter_im.size[0], filter_im.size[1], True)
 
 if __name__ == "__main__":
     sample()
