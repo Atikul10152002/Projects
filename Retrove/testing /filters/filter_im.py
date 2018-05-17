@@ -171,7 +171,7 @@ class Filter_image():
 
 def sample():
     filter_im = Filter_image(
-        "/Users/atikul/Downloads/626201613142.png")
+        "/Users/atikul/Downloads/Photos/IMG_20180515_102940.jpg")
 
     # filter_im.show()
 
