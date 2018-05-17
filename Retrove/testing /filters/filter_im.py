@@ -74,10 +74,14 @@ class Filter_image():
         
         
         # massive list and maps
+        list_start_time = time.time()
         for _filter in self.filtername:
-            pixels_arr = [self.filterdict[_filter](self.pix[x_cord, y_cord]) for x_cord in range(round(self.x), min(self.size[0], round(
-                self.x+self.width))) for y_cord in range(round(self.y), min(self.size[1], round(self.y+self.height)))]
+            _filter_time = time.time()
+            print(_filter, "Processing")
+            pixels_arr = [self.filterdict[_filter](self.pix[x_cord, y_cord]) for y_cord in range(round(self.y), min(self.size[1], round(self.y+self.height))) for x_cord in range(round(self.x), min(self.size[0], round(self.x+self.width)))]
+            print(_filter, "finished", time.time()-_filter_time)
             self.im.putdata(pixels_arr)
+        print("list comprehension finish",time.time()-list_start_time)
 
         # list(map(
         #     lambda _filter:
@@ -117,10 +121,11 @@ class Filter_image():
         blue = round(triangular(-1, pix[2]))
         return (choice([(0, 0, 0), (red, green, blue)]))
 
+    # brighter --> 
     # def inverse_pixalate_color(pix):
-    #     red = round(triangular(-1, pix[0]))
-    #     green = round(triangular(-1, pix[1]))
-    #     blue = round(triangular(-1, pix[2]))
+    #     red = round(triangular(pix[0], 255))
+    #     green = round(triangular(pix[1], 255))
+    #     blue = round(triangular(pix[2], 255))
     #     return (choice([(0, 0, 0), (red, green, blue)]))
 
     @staticmethod
@@ -171,7 +176,7 @@ class Filter_image():
 
 def sample():
     filter_im = Filter_image(
-        "/Users/atikul/Downloads/Photos/IMG_20180515_102940.jpg")
+        "/Users/atikul/Downloads/IMG_4657.jpg")
 
     # filter_im.show()
 
