@@ -69,7 +69,7 @@ class Filter_image():
         self.width = width if width != 0 else self.size[0]
         self.height = height if height != 0 else self.size[1]
         self.filtername = filtername
-        print(self.size[0]*self.size[1], "Pixels")
+        print(self.size[0]*self.size[1], "Pixels\n")
         # self.im.pixels[100,100] = (255,255,255)
         
         
@@ -77,11 +77,19 @@ class Filter_image():
         list_start_time = time.time()
         for _filter in self.filtername:
             _filter_time = time.time()
-            print(_filter, "Processing")
-            pixels_arr = [self.filterdict[_filter](self.pix[x_cord, y_cord]) for y_cord in range(round(self.y), min(self.size[1], round(self.y+self.height))) for x_cord in range(round(self.x), min(self.size[0], round(self.x+self.width)))]
-            print(_filter, "finished", time.time()-_filter_time)
+            print(self.filterdict[_filter].__name__, "Processing")
+
+            pixels_arr = [(self.filterdict[_filter](self.pix[x_cord, y_cord]) )for y_cord in range(round(self.y), min(self.size[1], round(self.y+self.height))) for x_cord in range(round(self.x), min(self.size[0], round(self.x+self.width)))]
             self.im.putdata(pixels_arr)
-        print("list comprehension finish",time.time()-list_start_time)
+
+            # pixels_arr = ((self.filterdict[_filter](self.pix[x_cord, y_cord]) )for y_cord in range(round(self.y), min(self.size[1], round(self.y+self.height))) for x_cord in range(round(self.x), min(self.size[0], round(self.x+self.width))))
+            # self.im.putdata(list(pixels_arr))
+
+            print(_filter, "finished", time.time()-_filter_time,"\n")
+
+
+
+        print("list comprehension finished in",time.time()-list_start_time, )
 
         # list(map(
         #     lambda _filter:
@@ -181,7 +189,7 @@ def sample():
     # filter_im.show()
 
     filter_im.filter(
-        ["inverse_pix", "blacknwhite"], 0, 0,
+        ["blacknwhite"], 0, 0,
         filter_im.size[0], filter_im.size[1], True)
 
 if __name__ == "__main__":
