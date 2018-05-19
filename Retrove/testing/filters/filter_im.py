@@ -184,13 +184,13 @@ class Filter_image():
 
 def sample():
     filter_im = Filter_image(
-        "/Users/atikul/Downloads/IMG_4657.jpg")
+        "20180224_173418.jpg")
 
     # filter_im.show()
 
     filter_im.filter(
         ["blacknwhite"], 0, 0,
-        filter_im.size[0], filter_im.size[1], True)
+        filter_im.size[0], filter_im.size[1])
 
 if __name__ == "__main__":
     sample()
