@@ -51,6 +51,23 @@ class Block(pygame.sprite.Sprite):
             self.rect.y += speed * 3
         else:
             self.rect.y += speed
+    
+    @staticmethod
+    def createBlocks(create_powerup=None):
+        global block, powerup
+        if create_powerup == None:
+            block = Block(random.choice(block_color_list), player.rect.x)
+            block_list.add(block)
+            allSpritesList.add(block)
+        elif create_powerup == "powerup":
+            powerup = Block(REALLYRED, screenWidth/2, powerup_image_des)
+            powerupList.add(powerup)
+            allSpritesList.add(powerup)
+        elif create_powerup == "powerup2":
+            powerup2 = Block(BLACK, screenWidth/2,  powerup2_image_des)
+            powerupList2.add(powerup2)
+            allSpritesList.add(powerup2)
+
 
 
 class BackgroundImage:
@@ -106,6 +123,29 @@ class Bullet(pygame.sprite.Sprite):
         self.rect.y -= bullet_speed
         self.rect.x += bullet_speed
 
+    @classmethod
+    def fireBullet(cls):
+        bullet = cls(bullet_image_des)
+        # pos = pygame.mouse.get_pos()
+        allSpritesList.add(bullet)
+        bulletList.add(bullet)
+
+    @classmethod
+    def fireBullet_diagonal(cls,side):
+        bullet = cls(bullet_image_des)
+        if side.lower() == 'l':
+            bullet.left_diagonal()
+        elif side.lower() == 'r':
+            bullet.right_diagonal()
+        allSpritesList.add(bullet)
+        bulletList.add(bullet)
+
+    @classmethod
+    def machine_gun(cls):
+        Bullet.fireBullet()
+        cls.fireBullet_diagonal("l")
+        cls.fireBullet_diagonal("r")
+
 
 class WriteToScreen():
     def __init__(self, msg, color, font_size):
@@ -120,6 +160,7 @@ class WriteToScreen():
     def Blit(self, position):
         screen.blit(self.font_render, position)
 
+    @staticmethod
     def center(msg, color, font_size, center_of_rect):
         myfont = pygame.font.Font(
             os.path.join(images_wd, "Chunkfive.otf"), font_size)
@@ -139,80 +180,36 @@ player_anim = spritesheet(player_sprite_image_des, 2, 1)
 llama = spritesheet(llama_image_des, 6, 1)
 
 
-def createBlocks(create_powerup=None):
-    global block, powerup
-    if create_powerup == None:
-        block = Block(random.choice(block_color_list), player.rect.x)
-        block_list.add(block)
-        allSpritesList.add(block)
-    elif create_powerup == "powerup":
-        powerup = Block(REALLYRED, screenWidth/2, powerup_image_des)
-        powerupList.add(powerup)
-        allSpritesList.add(powerup)
-    elif create_powerup == "powerup2":
-        powerup2 = Block(BLACK, screenWidth/2,  powerup2_image_des)
-        powerupList2.add(powerup2)
-        allSpritesList.add(powerup2)
-
-
-list(map(lambda x: createBlocks(), list(range(num_block))))
-list(map(lambda x: createBlocks("powerup"), list(range(numPowerup))))
-list(map(lambda x: createBlocks("powerup2"), list(range(numPowerup2))))
-
-
-def fireBullet():
-    bullet = Bullet(bullet_image_des)
-    # pos = pygame.mouse.get_pos()
-    allSpritesList.add(bullet)
-    bulletList.add(bullet)
-
-
-def fireBullet_diagonal(side):
-    bullet = Bullet(bullet_image_des)
-    if side.lower() == 'l':
-        bullet.left_diagonal()
-    elif side.lower() == 'r':
-        bullet.right_diagonal()
-    allSpritesList.add(bullet)
-    bulletList.add(bullet)
-
-
-def machine_gun():
-    fireBullet()
-    fireBullet_diagonal("l")
-    fireBullet_diagonal("r")
+list(map(lambda x: Block.createBlocks(), list(range(num_block))))
+list(map(lambda x: Block.createBlocks("powerup"), list(range(numPowerup))))
+list(map(lambda x: Block.createBlocks("powerup2"), list(range(numPowerup2))))
 
 
 def index_change(FPS, reset_index):
     global index, r_index
     r_index += 1
-
     if r_index % FPS == 0:
         index += 1
         r_index = 0
-    if index > reset_index.cols:
+    if index > (reset_index.cols*reset_index.rows):
         index = 0
-    # print (reset_index.cols)
 
 
 class loopFunc():
-
     def retryPowerup2Loop(self, powerup2):
         powerupList2.remove(powerup2)
         allSpritesList.remove(powerup2)
-        createBlocks("powerup2")
+        Block.createBlocks("powerup2")
 
     def retryBlockLoop(self, block):
         block_list.remove(block)
         allSpritesList.remove(block)
-        createBlocks()
+        Block.createBlocks()
 
     def retryPowerupLoop(self, powerup):
         powerupList.remove(powerup)
         allSpritesList.remove(powerup)
-        createBlocks("powerup")
-
-
+        Block.createBlocks("powerup")
 forLoop = loopFunc()
 
 
@@ -339,7 +336,7 @@ def intro(exname=None):
         pygame.mouse.set_visible(True)
         llama.draw(screen, index % llama.totalCellCount,
                    screenWidth / 2, screenHeight / 3, 4)
-        index_change(3, llama)
+        index_change(.5, llama)
 
         if joystick_working:
             if jstick.get_button(0):
@@ -503,19 +500,19 @@ def gameloop():
                     yVel = 0
                 if jstick.get_button(0):
                     if not machineGunNum:
-                        fireBullet()
+                        Bullet.fireBullet()
                         pygame.time.delay(10)
                         shoot.play()
                     elif machineGunNum:
                         shootM_gun.play()
-                        machine_gun()
+                        Bullet.machine_gun()
                 if jstick.get_button(1):
                     if not machineGunNum:
                         shoot.play()
-                        fireBullet()
+                        Bullet.fireBullet()
                     elif machineGunNum:
                         shootM_gun.play()
-                        machine_gun()
+                        Bullet.machine_gun()
                 if jstick.get_button(2):
                     pygame.quit()
                     quit()
@@ -531,10 +528,10 @@ def gameloop():
                 if event.key == K_SPACE:
                     if not machineGunNum:
                         shoot.play()
-                        fireBullet()
+                        Bullet.fireBullet()
                     elif machineGunNum:
                         shootM_gun.play()
-                        machine_gun()
+                        Bullet.machine_gun()
                     allSpritesList.draw(screen)
 
                 if event.key == K_LEFT or event.key == K_a:
@@ -566,7 +563,7 @@ def gameloop():
             for block in playerHitList:
                 # done = True
                 # playerHitList.remove(block)
-                # createBlocks()
+                # Block.createBlocks()
                 lives -= 1
                 live_loss.play()
                 numPowerup, numPowerup2, num_block = 5, 5, int(
@@ -578,9 +575,9 @@ def gameloop():
                 # block.remove(block)
                 block_list.remove(block)
                 allSpritesList.remove(block)
-                createBlocks()
+                Block.createBlocks()
 
-            list(map(lambda x: createBlocks(), playerHitList))
+            list(map(lambda x: Block.createBlocks(), playerHitList))
 
         for bullet in bulletList:
 
@@ -593,7 +590,7 @@ def gameloop():
                                    block.rect.center, 40, 5)
                 bulletList.remove(bullet)
                 allSpritesList.remove(bullet)
-                createBlocks()
+                Block.createBlocks()
                 score += 100
                 # font_render = myfont.render(str(score),1,WHITE)
                 # print("score:" , score)
@@ -610,7 +607,7 @@ def gameloop():
                 gainedPowerup.play()
                 playerHitList.remove(powerup)
                 lives += 1 if lives < 11 else 0
-                createBlocks("powerup")
+                Block.createBlocks("powerup")
                 # sartMachineGun = True
                 Powerup_start = round(time.time())
                 pygame.time.delay(0)
@@ -618,7 +615,7 @@ def gameloop():
             if powerup.rect.y > screenHeight - 10:
                 powerupList.remove(powerup)
                 allSpritesList.remove(powerup)
-                createBlocks("powerup")
+                Block.createBlocks("powerup")
 
                 # font_render = myfont.render(str(score),1,WHITE)
 
@@ -633,7 +630,7 @@ def gameloop():
                 gainedPowerup.play()
                 playerHitList2.remove(powerup2)
                 score += 100
-                createBlocks("powerup2")
+                Block.createBlocks("powerup2")
                 sartMachineGun = True
                 # PowerupStart2 = round(time.time())
 
@@ -649,7 +646,7 @@ def gameloop():
             if powerup2.rect.y > screenHeight - 10:
                 powerupList2.remove(powerup2)
                 allSpritesList.remove(powerup2)
-                createBlocks("powerup2")
+                Block.createBlocks("powerup2")
 
         for bullet in bulletList:
             powerupHitList = pygame.sprite.spritecollide(
@@ -659,7 +656,7 @@ def gameloop():
                 screen.blit(test_sub, powerup.rect.center)
                 bulletList.remove(bullet)
                 allSpritesList.remove(bullet)
-                createBlocks("powerup")
+                Block.createBlocks("powerup")
                 score = score - Score_takeaway_for_powerup \
                     if score > Score_takeaway_for_powerup else 0
 
@@ -669,7 +666,7 @@ def gameloop():
             if powerup2 in powerupHitList2:
                 bulletList.remove(bullet)
                 allSpritesList.remove(bullet)
-                createBlocks("powerup2")
+                Block.createBlocks("powerup2")
 
             if bullet.rect.y < -10:
                 bulletList.remove(bullet)

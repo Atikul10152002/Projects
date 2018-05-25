@@ -90,14 +90,14 @@ block_color = (220, 20, 60)
 start, FirstStart = time.time(), time.time()
 elasped = 0
 speed = constant_speed = 2.5
-# increasingSpeed = 0.02
-increasingSpeed = 0.05
+increasingSpeed = 0.02
+# increasingSpeed = 0.05
 globalxVel = globalyVel = 7
 bullet_speed = screenHeight / 35
 player_up_from_bottom = 150
 starting_lives = 3
 sartMachineGun, machineGunNum = False, False
-
+index, r_index = 0, 0
 done = False
 powerupDuration = 120
 Score_takeaway_for_powerup = 100
@@ -108,7 +108,6 @@ playerx = screenWidth / 2
 playery = screenHeight - player_height - \
     player_up_from_bottom
 block_width, block_height = 35, 25
-index, r_index = 0, 0
 
 
 allSpritesList = pygame.sprite.Group()

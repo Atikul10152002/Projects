@@ -38,3 +38,15 @@ class spritesheet():
             self.sheet, (x + self.handle[handle][0],
                          y + self.handle[handle][1]), 
                          self.cells[cellIndex])
+   
+    # r_index,index = 0,0
+    # @staticmethod
+    # def index_change(FPS, reset_index):
+    #     global r_index, index
+    #     r_index += 1
+    #     if r_index % FPS == 0:
+    #         index += 1
+    #         r_index = 0
+    #     if index > (reset_index.cols*reset_index.rows):
+    #         index = 0
+        # print (reset_index.cols)
