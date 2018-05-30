@@ -32,7 +32,7 @@ int main ()
   import sys
   import time
   */
-
+  system("cls");
   cout << "\n A GAME MADE BY MOHAMMAD ISLAM\n* The purpose of this program is to\
   create a complicated game of Rock, Paper, Scissors, Lizard, Spock.\n* The\
   game is made to be played against the COMPUTER. \n* The COMPUTER input is\
