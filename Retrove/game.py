@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-
+"""
+RETROVE
+Made by Mohammad Islam
+"""
 
 import pygame
 from pygame.locals import *
@@ -11,13 +14,22 @@ import sys
 from variables import *
 from spritesheet import spritesheet
 
-
+# Intitializes pygame and pygame font
 pygame.init()
 pygame.font.init()
-playMusic()
 
+"""
+accepts the parameter of "mute" after 
+the command to mute all sounds
+"""
+if sys.argv[1] == "mute":
+    set_all_sounds(0)
+else:
+    playMusic()
+
+
+# checks if joystick is accessable and sets it up
 joystick_working = True
-
 try:
     pygame.joystick.init()
     joysticks = [pygame.joystick.Joystick(x)
@@ -29,9 +41,18 @@ except Exception as E:
     joystick_working = False
     print(E, "joysticks not found")
 
+# Block Class
+
 
 class Block(pygame.sprite.Sprite):
     def __init__(self, color, triangular_mode, image=None):
+        """
+        Creates blocks using the color or the provided image
+
+        The triangular mode accepts x value (int) and sets 
+        the blocks location to populate the given value more
+            --It can be set to follow the players x location
+        """
         super().__init__()
         self.color = color
         if image == None:
@@ -51,8 +72,9 @@ class Block(pygame.sprite.Sprite):
             self.rect.y += speed * 3
         else:
             self.rect.y += speed
-    
+
     @staticmethod
+    # Creates all the blocks for the game
     def createBlocks(create_powerup=None):
         global block, powerup
         if create_powerup == None:
@@ -69,9 +91,15 @@ class Block(pygame.sprite.Sprite):
             allSpritesList.add(powerup2)
 
 
-
+# Background Image class
 class BackgroundImage:
     def __init__(self, image):
+        """
+        Creates repeating image as the background
+
+        Accepts the loaded image as the parameter and repeats the image
+        to fill the whole background
+        """
         self.image = image
         self.rect = self.image.get_rect()
 
@@ -83,9 +111,15 @@ class BackgroundImage:
                  range(0, screenHeight, self.rect.height)))
 
 
+# Player Class
 class Player(pygame.sprite.Sprite):
-
     def __init__(self, image=None):
+        """
+        Creates the player object
+
+        Accepts the parameter of an image for the player, 
+        if not provided a square is used insted
+        """
         super().__init__()
         if image != None:
             self.image = image
@@ -100,6 +134,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.x = screenWidth / 2
 
 
+# Bullet class
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, image):
         super().__init__()
@@ -131,7 +166,7 @@ class Bullet(pygame.sprite.Sprite):
         bulletList.add(bullet)
 
     @classmethod
-    def fireBullet_diagonal(cls,side):
+    def fireBullet_diagonal(cls, side):
         bullet = cls(bullet_image_des)
         if side.lower() == 'l':
             bullet.left_diagonal()
@@ -153,7 +188,7 @@ class WriteToScreen():
         self.color = color
         self.font_size = font_size
         self.myfont = pygame.font.Font(
-            os.path.join(images_wd, "Chunkfive.otf"), self.font_size, bold=True)
+            font_location, self.font_size, bold=True)
         self.font_render = self.myfont.render(self.msg, 1, self.color)
         self.rect = self.font_render.get_rect()
 
@@ -162,8 +197,7 @@ class WriteToScreen():
 
     @staticmethod
     def center(msg, color, font_size, center_of_rect):
-        myfont = pygame.font.Font(
-            os.path.join(images_wd, "Chunkfive.otf"), font_size)
+        myfont = pygame.font.Font(font_location, font_size)
         font_render = myfont.render(msg, 1, color)
         font_rect = font_render.get_rect()
         font_rect.center = center_of_rect
@@ -210,6 +244,8 @@ class loopFunc():
         powerupList.remove(powerup)
         allSpritesList.remove(powerup)
         Block.createBlocks("powerup")
+
+
 forLoop = loopFunc()
 
 
@@ -398,10 +434,10 @@ def intro(exname=None):
         dis_name = name if len(name) > 0 \
             else str(replace_name) + name
 
-        Intro_title = WriteToScreen.center(
+        WriteToScreen.center(
             dis_name, Intro_title_color, 100,
             ((screenWidth / 2), (screenHeight / 2)))
-        Intro_title_credit = WriteToScreen.center(
+        WriteToScreen.center(
             "Soknorobo", Intro_title_credit_color, 20,
             ((screenWidth / 2), (screenHeight / 2) + 50))
 
@@ -452,17 +488,19 @@ def gameloop():
     #     background_image[4])
     FirstStart, start = time.time(), time.time()
 
-    try:
-        if str(sys.argv[1].lower()) == "6517":
-            score += 6517
-        elif str(sys.argv[1].lower()) == "easy":
-            increasingSpeed = 0.002
-        elif str(sys.argv[1].lower()) == "normal":
-            increasingSpeed = 0.003
-        elif str(sys.argv[1].lower()) == "hard":
-            increasingSpeed = 0.02
-    except:
-        pass
+    # try:
+    #     if str(sys.argv[1].lower()) == "6517":
+    #         score += 6517
+    #     elif str(sys.argv[1].lower()) == "easy":
+    #         increasingSpeed = 0.002
+    #     elif str(sys.argv[1].lower()) == "normal":
+    #         increasingSpeed = 0.003
+    #     elif str(sys.argv[1].lower()) == "hard":
+    #         increasingSpeed = 0.02
+    #     # elif str(sys.argv[1]) == "mute":
+    #     #     set_all_sounds(0)
+    # except Exception as e:
+    #     print(e)
 
     while not done:
         screen.fill(BK_color)
@@ -583,7 +621,6 @@ def gameloop():
 
             blockHitList = pygame.sprite.spritecollide(
                 bullet, block_list, True)
-
 
             for block in blockHitList:
                 pygame.draw.circle(screen, (0, 127, 255),
@@ -725,7 +762,7 @@ def gameloop():
                                          str(lives), BLACK, 30)
         lives_to_display.Blit([screenWidth - 150, 10])
 
-        pygame.display.update()
+        pygame.display.flip()
         # print("III")
 
     def rewrite():
@@ -742,10 +779,12 @@ def gameloop():
         pickle.dump(highscoreOrgList,
                     open(highscoreFilename, "wb"),
                     protocol=pickle.HIGHEST_PROTOCOL)
+
     if score > highscore:
         highscore = score
         rewrite()
-    if score > score > min(sortedHighkeyList):
+
+    if score > min(sortedHighkeyList):
         rewrite()
 
     print("FINAL SCORE:  \"", score, "\"  in",

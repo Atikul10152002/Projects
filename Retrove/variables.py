@@ -14,6 +14,7 @@ executing_wd = os.path.dirname(os.path.realpath(sys.argv[0]))
 current_wd = os.path.join(executing_wd, "assets")
 highscore_wd = os.path.join(current_wd, ".Highscore")
 images_wd = os.path.join(current_wd, "images")
+font_wd = os.path.join(current_wd, "fonts")
 ExtraImages_wd = os.path.join(current_wd, "Extra_img")
 backgroundImages_wd = os.path.join(images_wd, "bac")
 
@@ -119,6 +120,9 @@ player_list = pygame.sprite.Group()
 
 # pygame.transform.scale2x(pygame.image.load(filepath).convert_alpha())
 
+#LOCATION OF THE FONT
+font_location = os.path.join(font_wd, "Chunkfive.otf")
+
 # FILEPATH FOR THE IMAGES
 # Blocks -- >
 powerup_image_des = pygame.transform.scale2x(pygame.image.load(
@@ -127,6 +131,8 @@ powerup2_image_des = pygame.transform.scale2x(
     pygame.image.load(os.path.join(images_wd, "bullet_powerup.png")).convert_alpha())
 
 # Assets -- >
+crown_image_des = pygame.transform.scale2x(
+    pygame.image.load(os.path.join(images_wd, "crown.png")).convert_alpha())
 player_image_des = pygame.transform.scale2x(
     pygame.image.load(os.path.join(images_wd, "player_png.png")).convert_alpha())
 bullet_image_des = pygame.transform.scale2x(
