@@ -1,19 +1,4 @@
-#include <iostream>
-#include <string>
-#include <ctime>
-
-using namespace std;
-
-
-void game();
-string playerIfelse(string);
-string computerIfelse(int);
-string outcomeIfelse(string, string);
-
-
-int main ()
-{
-  /*
+/*
   * The purpose of this program is to create a complicated game of
       Rock, Paper, Scissors, Lizard, Spock.
   * The game is made to be played against the COMPUTER.
@@ -31,9 +16,26 @@ int main ()
   import os
   import sys
   import time
-  */
+*/
+
+#include <iostream>
+#include <string>
+#include <ctime>
+
+using namespace std;
+
+
+void game();
+string playerIfelse(string);
+string computerIfelse(int);
+string outcomeIfelse(string, string);
+
+
+int main ()
+{
+  
   system("cls");
-  cout << "\n A GAME MADE BY MOHAMMAD ISLAM\n* The purpose of this program is to\
+  cout << "\nA GAME MADE BY MOHAMMAD ISLAM\n* The purpose of this program is to\
   create a complicated game of Rock, Paper, Scissors, Lizard, Spock.\n* The\
   game is made to be played against the COMPUTER. \n* The COMPUTER input is\
   fully random \n\n\nThe winner is CHOSEN by the follwing rules \n- Rock blunts\
@@ -46,7 +48,7 @@ int main ()
   \n   )  )    )  )    )  ) \
   \n  /  /    /  /    /  /  \
   \n /__/    /__/    /__/ " << endl;
-
+  
   game();
 
 }
@@ -100,6 +102,7 @@ void game()
 }
 
 string playerIfelse(string PLAYER){
+
   if (PLAYER == "sp"){
     PLAYER = "Spock";
   }
@@ -127,20 +130,19 @@ string playerIfelse(string PLAYER){
 
 string computerIfelse(int CHOSEN){
   string COMPUTER;
-  if (CHOSEN == 1){
-    COMPUTER = "Rock";
-  }
-  else if (CHOSEN == 2){
-    COMPUTER = "Paper";
-  }   
-  else if (CHOSEN == 3){
-    COMPUTER = "Scissors";
-  }     
-  else if (CHOSEN == 4){
-    COMPUTER = "Lizard";
-  }
-  else{
-    COMPUTER = "Spock";
+  switch (CHOSEN){
+    case 1:
+      COMPUTER = "Rock"; break;
+    case 2:
+      COMPUTER = "Paper"; break;
+    case 3:
+      COMPUTER = "Scissors"; break;
+    case 4:
+      COMPUTER = "Lizard"; break;
+    case 5:
+      COMPUTER = "Spock"; break;
+    default:
+      COMPUTER = "ERROR"; break;
   }
   return COMPUTER;
 }
@@ -149,87 +151,60 @@ string outcomeIfelse(string PLAYER, string COMPUTER){
   string OUTCOME;
   if (PLAYER == "who"){
     OUTCOME = "\
-        _|_|          _|_|_|    _|_|    _|      _|  _|_|_|_|      _|      _|    _|_|    _|_|_|    _|_|_|_|      _|_|_|    _|      _| \n\
-      _|    _|      _|        _|    _|  _|_|  _|_|  _|            _|_|  _|_|  _|    _|  _|    _|  _|            _|    _|    _|  _| \n\
-      _|_|_|_|      _|  _|_|  _|_|_|_|  _|  _|  _|  _|_|_|        _|  _|  _|  _|_|_|_|  _|    _|  _|_|_|        _|_|_|        _| \n\
-      _|    _|      _|    _|  _|    _|  _|      _|  _|            _|      _|  _|    _|  _|    _|  _|            _|    _|      _| \n\
-      _|    _|        _|_|_|  _|    _|  _|      _|  _|_|_|_|      _|      _|  _|    _|  _|_|_|    _|_|_|_|      _|_|_|        _|    _| \n\
-                                                                                                                                  _| \n\
-      _|      _|    _|_|    _|    _|    _|_|    _|      _|  _|      _|    _|_|    _|_|_|        _|_|_|    _|_|_|  _|          _|_|    _|      _| \n\
-      _|_|  _|_|  _|    _|  _|    _|  _|    _|  _|_|  _|_|  _|_|  _|_|  _|    _|  _|    _|        _|    _|        _|        _|    _|  _|_|  _|_| \n\
-      _|  _|  _|  _|    _|  _|_|_|_|  _|_|_|_|  _|  _|  _|  _|  _|  _|  _|_|_|_|  _|    _|        _|      _|_|    _|        _|_|_|_|  _|  _|  _| \n\
-      _|      _|  _|    _|  _|    _|  _|    _|  _|      _|  _|      _|  _|    _|  _|    _|        _|          _|  _|        _|    _|  _|      _| \n\
-      _|      _|    _|_|    _|    _|  _|    _|  _|      _|  _|      _|  _|    _|  _|_|_|        _|_|_|  _|_|_|    _|_|_|_|  _|    _|  _|      _|  ";
+   _                                                      _        _                     \n\
+  /_\\     __ _  __ _ _ __ ___   ___   _ __ ___   __ _  __| | ___  | |__  _   _           \n\
+ / _ \\   / _` |/ _` | '_ ` _ \\ / _ \\ | '_ ` _ \\ / _` |/ _` |/ _ \\ | '_ \\| | | |          \n\
+/  _  \\ | (_| | (_| | | | | | |  __/ | | | | | | (_| | (_| |  __/ | |_) | |_| |          \n\
+\\_/ \\_/  \\__, |\\__,_|_| |_| |_|\\___| |_| |_| |_|\\__,_|\\__,_|\\___|_|_.__/ \\__, |          \n\
+  /\\/\\   |___/ |__   __ _ _ __ ___  _ __ ___   __ _  __| |   \\_   \\___| ||___/ _ __ ___  \n\
+ /    \\ / _ \\| '_ \\ / _` | '_ ` _ \\| '_ ` _ \\ / _` |/ _` |    / /\\/ __| |/ _` | '_ ` _ \\ \n\
+/ /\\/\\ \\ (_) | | | | (_| | | | | | | | | | | | (_| | (_| | /\\/ /_ \\__ \\ | (_| | | | | | |\n\
+\\/    \\/\\___/|_| |_|\\__,_|_| |_| |_|_| |_| |_|\\__,_|\\__,_| \\____/ |___/_|\\__,_|_| |_| |_|\n";
   }
-
+    
   // outcomes
+
+  // draw 
   else if (PLAYER == COMPUTER){
     OUTCOME = "It\"s a DRAW!";
   }
-  else if (PLAYER == "Rock" && COMPUTER == "Scissors"){
+
+
+  // other outcomes
+
+  // player wins
+  else if (
+    PLAYER == "Rock" && COMPUTER == "Scissors" || 
+    PLAYER == "Rock" && COMPUTER == "Lizard" ||
+    PLAYER == "Paper" && COMPUTER == "Rock" ||
+    PLAYER == "Paper" && COMPUTER == "Spock" || 
+    PLAYER == "Scissors" && COMPUTER == "Paper" ||
+    PLAYER == "Scissors" && COMPUTER == "Lizard" ||
+    PLAYER == "Lizard" && COMPUTER == "Paper" || 
+    PLAYER == "Lizard" && COMPUTER == "Rock" || 
+    PLAYER == "Spock" && COMPUTER == "Rock" || 
+    PLAYER == "Spock" && COMPUTER == "Scissors"
+    ){
     OUTCOME = "PLAYER wins!";
   }
-  else if (PLAYER == "Rock" && COMPUTER == "Paper"){
-    OUTCOME = "COMPUTER wins!";
-  }
-  else if (PLAYER == "Rock" && COMPUTER == "Lizard"){
-    OUTCOME = "PLAYER wins!";
-  }
-  else if (PLAYER == "Rock" && COMPUTER == "Spock"){
+
+  // computer wins
+  else if (
+    PLAYER == "Rock" && COMPUTER == "Paper" || 
+    PLAYER == "Rock" && COMPUTER == "Spock" || 
+    PLAYER == "Paper" && COMPUTER == "Scissors" || 
+    PLAYER == "Paper" && COMPUTER == "Lizard" ||
+    PLAYER == "Scissors" && COMPUTER == "Rock" ||
+    PLAYER == "Scissors" && COMPUTER == "Spock" ||
+    PLAYER == "Lizard" && COMPUTER == "Scissors" ||
+    PLAYER == "Lizard" && COMPUTER == "Spock" ||
+    PLAYER == "Spock" && COMPUTER == "Paper" ||
+    PLAYER == "Spock" && COMPUTER == "Lizard"
+    ){
     OUTCOME = "COMPUTER wins!";
   }
 
-  else if (PLAYER == "Paper" && COMPUTER == "Rock"){
-    OUTCOME = "PLAYER wins!";
-  }
-  else if (PLAYER == "Paper" && COMPUTER == "Scissors"){
-    OUTCOME = "COMPUTER wins!";
-  }
-  else if (PLAYER == "Paper" && COMPUTER == "Spock"){
-    OUTCOME = "PLAYER wins!";
-  }
-  else if (PLAYER == "Paper" && COMPUTER == "Lizard"){
-    OUTCOME = "COMPUTER wins!";
-  }
-
-  else if (PLAYER == "Scissors" && COMPUTER == "Paper"){
-    OUTCOME = "PLAYER wins!";
-  }
-  else if (PLAYER == "Scissors" && COMPUTER == "Rock"){
-    OUTCOME = "COMPUTER wins!";
-  }
-  else if( PLAYER == "Scissors" && COMPUTER == "Lizard"){
-    OUTCOME = "PLAYER wins!";
-  }
-  else if (PLAYER == "Scissors" && COMPUTER == "Spock"){
-    OUTCOME = "COMPUTER wins!";
-  }
-
-  else if (PLAYER == "Lizard" && COMPUTER == "Paper"){
-    OUTCOME = "PLAYER wins!";
-  }
-  else if (PLAYER == "Lizard" && COMPUTER == "Rock"){
-    OUTCOME = "PLAYER wins!";
-  }
-  else if (PLAYER == "Lizard" && COMPUTER == "Scissors"){
-    OUTCOME = "COMPUTER wins!";
-  }
-  else if (PLAYER == "Lizard" && COMPUTER == "Spock"){
-    OUTCOME = "COMPUTER wins!";
-  }
-
-  else if (PLAYER == "Spock" && COMPUTER == "Paper"){
-    OUTCOME = "COMPUTER wins!";
-  }
-  else if (PLAYER == "Spock" && COMPUTER == "Rock"){
-    OUTCOME = "PLAYER wins!";
-  }
-  else if (PLAYER == "Spock" && COMPUTER == "Scissors"){
-    OUTCOME = "PLAYER wins!";
-  }
-  else if (PLAYER == "Spock" && COMPUTER == "Lizard"){
-    OUTCOME = "COMPUTER wins!";
-  }
+  // else
   else{
     OUTCOME = "Invalid user input, COMPUTER wins!";
   }
