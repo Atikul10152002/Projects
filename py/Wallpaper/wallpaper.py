@@ -16,10 +16,12 @@ from termcolor import cprint
 DEFAULT_WALL_WIDTH = 1200
 DEFAULT_WALL_HEIGHT = 800
 
+
 class DrawingInImage:
     """
     This class used to draw images utalizing lines, points and polygaons
     """
+
     def __init__(self):
         self.arg_names = [
             'Command',
@@ -32,7 +34,8 @@ class DrawingInImage:
             in self.args.keys() else DEFAULT_WALL_WIDTH
         self.height = int(sys.argv[2]) if 'scree_width' and 'screen_height' \
             in self.args.keys() else DEFAULT_WALL_HEIGHT
-        self.repetition = int(sys.argv[3]) if 'repetition' in self.args.keys() else 30
+        self.repetition = int(
+            sys.argv[3]) if 'repetition' in self.args.keys() else 30
         self.box_width = 10
         self.box_height = 10
         self.im = Image.new('RGB',
@@ -98,7 +101,7 @@ current_wd = os.path.dirname(os.path.realpath(sys.argv[0]))
 walls_directory = os.path.join(current_wd, "walls")
 
 
-if __name__ == '__main__':    
+if __name__ == '__main__':
     wall_num = 0
     putToScreen = DrawingInImage()
     for i in range(10):
@@ -115,4 +118,5 @@ if __name__ == '__main__':
         putToScreen.save(filename)
 
     cprint(putToScreen.args, color='grey', attrs=["bold", "dark"])
-    cprint(f"Successfully created {wall_num} random wallpapers", on_color='on_green')
+    cprint(
+        f"Successfully created {wall_num} random wallpapers", on_color='on_green')

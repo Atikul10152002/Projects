@@ -3,6 +3,7 @@ import time
 from random import choice, triangular
 from PIL import Image
 
+
 class Filter_image():
     """
     Filter_imag("626201613142.png")
@@ -29,7 +30,8 @@ class Filter_image():
         self.filterdict = dict(zip(self.filterstrings,
                                    self.filterfuncs))
         try:
-            self.imag = self.im = Image.open(str(filename))
+            self.imag =  self.im = Image.open(str(filename))
+            
         except Exception as e:
             print(e, "\n__init__ ERROR ==> Missing File")
             sys.exit(1)
@@ -37,6 +39,7 @@ class Filter_image():
         self.size = self.imag.size
         self._width = self.size[0]
         self._height = self.size[1]
+        # self.im = Image.new("RGB",self.size)
 
     def __repr__(self):
         return f"Filter_imag({self.filename})"
@@ -71,42 +74,25 @@ class Filter_image():
         self.filtername = filtername
         print(self.size[0]*self.size[1], "Pixels\n")
         # self.im.pixels[100,100] = (255,255,255)
-        
-        
+
         # massive list and maps
         list_start_time = time.time()
-        for _filter in self.filtername:
-            _filter_time = time.time()
-            print(self.filterdict[_filter].__name__, "Processing")
 
-            pixels_arr = [(self.filterdict[_filter](self.pix[x_cord, y_cord]) )for y_cord in range(round(self.y), min(self.size[1], round(self.y+self.height))) for x_cord in range(round(self.x), min(self.size[0], round(self.x+self.width)))]
-            self.im.putdata(pixels_arr)
+        print("Processing")
+        list(map(lambda _filter: self.im.putdata([(self.filterdict[_filter](self.pix[x_cord, y_cord]))for y_cord in range(round(self.y), min(
+                self.size[1], round(self.y+self.height))) for x_cord in range(round(self.x), min(self.size[0], round(self.x+self.width)))]), self.filtername))
+        
+        # for _filter in self.filtername:
+        #     _filter_time = time.time()
+        #     print(self.filterdict[_filter].__name__, "Processing")
 
-            # pixels_arr = ((self.filterdict[_filter](self.pix[x_cord, y_cord]) )for y_cord in range(round(self.y), min(self.size[1], round(self.y+self.height))) for x_cord in range(round(self.x), min(self.size[0], round(self.x+self.width))))
-            # self.im.putdata(list(pixels_arr))
+            # pixels_arr = [(self.filterdict[_filter](self.pix[x_cord, y_cord]))for y_cord in range(round(self.y), min(
+            #     self.size[1], round(self.y+self.height))) for x_cord in range(round(self.x), min(self.size[0], round(self.x+self.width)))]
+            
+            # self.im.putdata([(self.filterdict[_filter](self.pix[x_cord, y_cord]))for y_cord in range(round(self.y), min(
+            #     self.size[1], round(self.y+self.height))) for x_cord in range(round(self.x), min(self.size[0], round(self.x+self.width)))])
 
-            print(_filter, "finished", time.time()-_filter_time,"\n")
-
-
-
-        print("list comprehension finished in",time.time()-list_start_time, )
-
-        # list(map(
-        #     lambda _filter:
-        #     list(map(
-        #         lambda y_cord:
-        #         list(map(
-        #             lambda x_cord:
-        #             self.im.putpixel((
-        #                 x_cord, y_cord),
-        #                 (self.filterdict[_filter](
-        #                     self.pix[x_cord, y_cord]))),
-        #             range(round(self.x),
-        #                   min(self.size[0], round(self.x+self.width))))),
-        #         range(round(self.y),
-        #               min(self.size[1], round(self.y+self.height))))),
-        #     self.filtername))
-
+        print("list comprehension finished in", time.time()-list_start_time )
 
         self.save()
         if show_filtered_img == True:
@@ -129,7 +115,7 @@ class Filter_image():
         blue = round(triangular(-1, pix[2]))
         return (choice([(0, 0, 0), (red, green, blue)]))
 
-    # brighter --> 
+    # brighter -->
     # def inverse_pixalate_color(pix):
     #     red = round(triangular(pix[0], 255))
     #     green = round(triangular(pix[1], 255))
@@ -191,6 +177,7 @@ def sample():
     filter_im.filter(
         ["blacknwhite"], 0, 0,
         filter_im.size[0], filter_im.size[1])
+
 
 if __name__ == "__main__":
     sample()
