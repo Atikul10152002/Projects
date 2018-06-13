@@ -8,6 +8,9 @@ line_len = 5
 line_width = 1
 num_line = 50
 
+
+save_file_ = 'wall.png'
+
 im = Image.new('RGB', (IMAGEWITH,IMAGEHEIGHT))
 draw = ImageDraw.Draw(im)
 
@@ -31,4 +34,5 @@ for i in range(num_line):
             break
         
 # draw.line([0,0,round((x_end/iteration)+10),round((y_end/iteration)+10)], fill=255,width=2)
-im.save('wall.png')
+im.save(save_file_)
+print("Image saved as ",save_file_)
