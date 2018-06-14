@@ -25,8 +25,8 @@ for _ in range(reps):
     ex, ey = choice(points)
     for _ in range(len(points)):
         x, y = choice(points)
-        # draw.line([ex,ey,x,y], fill=(255,255,255), width=line_width)
-        draw.line([ex,ey,x,y], fill=(randint(0,255),randint(0,255),randint(0,255)), width=line_width)
+        draw.line([ex,ey,x,y], fill=(255,255,255), width=line_width)
+        # draw.line([ex,ey,x,y], fill=(randint(0,255),randint(0,255),randint(0,255)), width=line_width)
         draw.ellipse((x-ellipse_width, y-ellipse_width, x+ellipse_width, y+ellipse_width), 'blue')
         # points.remove([x,y]) 
         # ex, ey = x, y

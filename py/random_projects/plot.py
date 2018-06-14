@@ -8,4 +8,4 @@ save_file_ = 'wall.png'
 
 plt.savefig(save_file_)
 print("Plot saved as "+save_file_)
-plt.show()
+# plt.show()

@@ -1,13 +1,12 @@
 from PIL import Image, ImageDraw
 from random import randint, choice
-
+from pyprogressbar import prg
 
 IMAGEWITH = 500
 IMAGEHEIGHT = 500
 line_len = 5
 line_width = 1
 num_line = 50
-
 
 save_file_ = 'wall.png'
 
@@ -20,6 +19,7 @@ iteration =  0
 for i in range(num_line):
     x = ex = 0
     y = ey = 0
+    prg(i,num_line)
     while 1:
         # x+= randint(0,line_len)
         # y+= randint(0,line_len)
