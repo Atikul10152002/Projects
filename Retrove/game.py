@@ -22,10 +22,13 @@ pygame.font.init()
 accepts the parameter of "mute" after 
 the command to mute all sounds
 """
-if sys.argv[1] == "mute":
-    set_all_sounds(0)
-else:
-    playMusic()
+try:
+    if sys.argv[1] == "mute":
+        set_all_sounds(0)
+    else:
+        playMusic()
+except:
+    pass
 
 
 # checks if joystick is accessable and sets it up
