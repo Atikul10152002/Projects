@@ -1,61 +1,81 @@
 from kivy.app import App
-# from kivy.uix.widget import Widget
-# from kivy.graphics import Color, Ellipse, Line
-# from kivy.uix.image import Image
-# from kivy.uix.label import Label
-# from kivy.uix.button import Button
-from kivy.lang.builder import Builder
-# from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.screenmanager import ScreenManager, Screen, FadeTransition
 from kivy.uix.widget import Widget
-from kivy.graphics import Line
-from kivy.clock import Clock
-from kivy.properties import NumericProperty, ListProperty
-from kivy.animation import Animation
-from random import randint
+from kivy.graphics import Color, Rectangle
 from kivy.core.window import Window
+from kivy.uix.image import Image
+from kivy.clock import Clock
+from kivy.uix.label import Label
+from kivy.core.audio import SoundLoader
+from kivy.graphics import *
+from kivy.uix.button import Button
+import smtplib
+import random
+from kivy.uix.textinput import TextInput
+import pickle
+# #server.ehlo()
+#server.sendmail("notabot69.py@gmail.com", "8654051718@sms.myboostmobile.com", var)
 
-class MainScreen(Screen):
-    center = ListProperty([Window.width/2, Window.height/2])
-    pass
+#txt.att.net sms.myboostmobile.com
+#"messaging.sprintpcs.com",  "vmobl.com"
+class Menu(Widget):
+    def __init__(self):
+        super(Menu, self).__init__()
+        self.server = smtplib.SMTP('smtp.gmail.com', 587)
+        self.server.starttls()
+        self.server.login("resatikul@gmail.com", "Islam2002@")
+        self.emailExtensions = ["sms.myboostmobile.com", "txt.att.net", "mms.cricketwireless.net", "tmomail.net", "email.uscc.net", "vtext.com",]
+        self.send = Button(center_x=Window.width/4*3, center_y = Window.height/4,
+                           text="Send Message", width = Window.width/4, height = Window.height/4)
+        self.number = TextInput(text='', x=Window.width/4, y=Window.height/4*3, width = Window.width/3,height = Window.height/12 , multiline=False)
+        self.message = TextInput(text='', x=Window.width/4, y=Window.height/4*2, width = Window.width/2)
+        self.send.bind(on_press=self.sendText)
+        self.messageLabel = Label(text="enter message here", x=Window.width/4, y=Window.height/4*2.5)
+        self.numberLabel = Label(text="enter number/address here", x=Window.width/4, y=Window.height/4*3.2)
+        self.sentLabel = Label(text="", x=Window.width/4, y=Window.height/6)
+        self.add_widget(self.send)
+        self.add_widget(self.number)
+        self.add_widget(self.message)
+        self.add_widget(self.messageLabel)
+        self.add_widget(self.numberLabel)
+        self.add_widget(self.sentLabel)
 
-class Rect(Widget):
-    _height= _width = NumericProperty(randint(5,30))
-    def __init__(self, **kw):
-        super().__init__(**kw)
-        self._height= self._width = randint(5,30)
-    def cool_anim(self):
-        Animation.cancel_all(self)
-        anim = Animation(
-            x = randint(0, round(Window.width)),
-            y = randint(0, round(Window.height)), 
-            duration=4, 
-            t="out_elastic")
-        anim.start(self)
-    def on_touch_down(self, touch):
-        self.cool_anim()
-    pass
+        self.extensionLabel = Label(text="being sent to phone", x=Window.width/4, y=Window.height/4*1.5)
+        self.add_widget(self.extensionLabel)
 
-class GameScreen(Screen):
-    pass
+        self.phone = Button(center_x=Window.width/8, center_y = Window.height/8,
+                           text="use phone number", width = Window.width/8, height = Window.height/8)
+        self.phone.bind(on_press=self.changeToPhone)
+        self.add_widget(self.phone)
 
-class Widg(Widget):
-    def __init__(self,**kwargs):
-        super().__init__(**kwargs)
-        for _ in range(round(Window.width/15)):
-            self.add_widget(Rect())
-    pass
+        self.gmail = Button(center_x=Window.width/8, center_y = Window.height/8*2,
+                           text="use gmail", width = Window.width/8, height = Window.height/8)
+        self.gmail.bind(on_press=self.changeToGmail)
+        self.add_widget(self.gmail)
 
-class ScreenManagement(ScreenManager):
-    pass
-
-Presentation = Builder.load_file("MyPaint.kv")
+    def sendText(self, *args):
+        if self.number.text != "" and self.message.text != "":
+            self.sentLabel.text = ""
+            for x in range(0, len(self.emailExtensions)):
+                self.server.sendmail("notabot69.py@gmail.com", self.number.text+"@"+self.emailExtensions[x], self.message.text)
+            self.number.text = ""
+            self.message.text = ""
+            self.sentLabel.text = "Message sent"
+    def changeToPhone(self, *args):
+        self.extensionLabel.text = "being sent to phone"
+        self.emailExtensions = ["sms.myboostmobile.com", "txt.att.net", "mms.cricketwireless.net", "tmomail.net", "email.uscc.net", "vtext.com",]
+    def changeToGmail(self, *args):
+        self.extensionLabel.text = "being sent to gmail"
+        self.emailExtensions = ["gmail.com"]
 
 
-class MyPaintApp(App):
+
+class TextApp(App):
     def build(self):
-        return Presentation
-
+        # game = Game()
+        # return game
+        top = Widget()
+        top.add_widget(Menu())
+        return top
 
 if __name__ == '__main__':
-    MyPaintApp().run()
+    TextApp().run()
