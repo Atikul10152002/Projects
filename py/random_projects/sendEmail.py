@@ -9,12 +9,16 @@ myPass = str(getpass("Your password: "))
 sendEmail = input("Recipient's email: ")
 
 # Message
+if '@gmail.com' not in myEmail:
+    myEmail += "@gmail.com"
+if '@gmail.com' not in sendEmail:
+    sendEmail += "@gmail.com"
+
 subject = input("Email Subject: ")
 msg = MIMEText(input("Email Body: "))
 msg['subject'] = subject
 
-server = smtplib.SMTP('smtp.gmail.com', 587)
-server.starttls()
+server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
 server.login(myEmail, myPass)
 server.sendmail(myEmail, [sendEmail], msg.as_string())
 server.quit()
