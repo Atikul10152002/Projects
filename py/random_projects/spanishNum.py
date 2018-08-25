@@ -1,6 +1,9 @@
 import random
 import sys
 import os
+import colorama
+colorama.init()
+from termcolor import cprint
 
 numbers = [
     ['cero', ' 0'],
@@ -125,8 +128,7 @@ while True:
     if "q" in player.lower() or "quit" in player.lower():
         sys.exit()
     elif player == qnum[1]:
-
-        print(CORRECT_MESSAGE)
+        cprint(CORRECT_MESSAGE, color="green")
     else:
         print("\n#HINT#")
         hints = [qnum[1],
@@ -144,5 +146,5 @@ while True:
             sys.exit()
         elif player == qnum[1]:
 
-            print(CORRECT_MESSAGE)
-        else: print(WRONG_MESSAGE)
+            cprint(CORRECT_MESSAGE, color="green")
+        else: cprint(WRONG_MESSAGE, color="red")
