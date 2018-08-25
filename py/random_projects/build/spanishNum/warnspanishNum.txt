@@ -1,0 +1,12 @@
+missing module named 'org.python' - imported by pickle, /Users/atikul/GitHub/projects/py/random_projects/spanishNum.py, xml.sax
+excluded module named _frozen_importlib - imported by importlib, importlib.abc, /Users/atikul/GitHub/projects/py/random_projects/spanishNum.py
+missing module named _frozen_importlib_external - imported by importlib._bootstrap, importlib, importlib.abc, /Users/atikul/GitHub/projects/py/random_projects/spanishNum.py
+missing module named _winreg - imported by platform, /Users/atikul/GitHub/projects/py/random_projects/spanishNum.py
+missing module named java - imported by platform, /Users/atikul/GitHub/projects/py/random_projects/spanishNum.py
+missing module named 'java.lang' - imported by platform, /Users/atikul/GitHub/projects/py/random_projects/spanishNum.py, xml.sax._exceptions
+missing module named vms_lib - imported by platform, /Users/atikul/GitHub/projects/py/random_projects/spanishNum.py
+missing module named msvcrt - imported by subprocess, /Users/atikul/GitHub/projects/py/random_projects/spanishNum.py, getpass
+missing module named winreg - imported by platform, mimetypes, /Users/atikul/GitHub/projects/py/random_projects/spanishNum.py, urllib.request
+missing module named nt - imported by os, ntpath, shutil, /Users/atikul/GitHub/projects/py/random_projects/spanishNum.py
+missing module named org - imported by copy, /Users/atikul/GitHub/projects/py/random_projects/spanishNum.py
+missing module named _winapi - imported by encodings, subprocess, /Users/atikul/GitHub/projects/py/random_projects/spanishNum.py
