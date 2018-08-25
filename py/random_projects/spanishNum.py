@@ -1,9 +1,11 @@
 import random
 import sys
 import os
-os.system("pip install colorama termcolor")
-import colorama
-colorama.init()
+try:
+    import colorama
+    colorama.init()
+except:
+    pass
 from termcolor import cprint
 
 numbers = [
