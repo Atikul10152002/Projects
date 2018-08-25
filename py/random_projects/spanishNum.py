@@ -1,6 +1,7 @@
 import random
 import sys
 import os
+os.system("pip install colorama termcolor")
 import colorama
 colorama.init()
 from termcolor import cprint
