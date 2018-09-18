@@ -1,6 +1,6 @@
 import sys
 import time
-from random import choice, triangular
+from random import choice, triangular, uniform
 from PIL import Image
 
 
@@ -110,9 +110,9 @@ class Filter_image():
 
     @staticmethod
     def inverse_pixalate_color(pix):
-        red = round(triangular(-1, pix[0]))
-        green = round(triangular(-1, pix[1]))
-        blue = round(triangular(-1, pix[2]))
+        red = round(uniform(-1, pix[0]))
+        green = round(uniform(-1, pix[1]))
+        blue = round(uniform(-1, pix[2]))
         return (choice([(0, 0, 0), (red, green, blue)]))
 
     # brighter -->
@@ -169,13 +169,12 @@ class Filter_image():
 
 
 def sample():
-    filter_im = Filter_image(
-        "20180224_173418.jpg")
+    filter_im = Filter_image(sys.argv[1])
 
     # filter_im.show()
 
     filter_im.filter(
-        ["blacknwhite"], 0, 0,
+        ["inverse_pix"], 0, 0,
         filter_im.size[0], filter_im.size[1])
 
 
