@@ -3,8 +3,8 @@
 block_cipher = None
 
 
-a = Analysis(['netcat.py'],
-             pathex=['/Users/atikul/GitHub/projects/py/netsocket'],
+a = Analysis(['../netcat.py'],
+             pathex=['/Users/atikul/GitHub/projects/py/netsocket/App'],
              binaries=[],
              datas=[],
              hiddenimports=[],

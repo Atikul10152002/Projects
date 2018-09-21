@@ -1,3 +1,3 @@
 ([('netcat',
-   '/Users/atikul/GitHub/projects/py/netsocket/dist/netcat',
+   '/Users/atikul/GitHub/projects/py/netsocket/App/dist/netcat',
    'EXECUTABLE')],)
