@@ -5,7 +5,7 @@ t = turtle.Turtle(shape="turtle")
 t.lt(90)
 
 lv = 13
-l = 120
+l = 100
 s = 17
 
 t.width(lv)
