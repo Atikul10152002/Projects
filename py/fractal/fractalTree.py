@@ -1,12 +1,12 @@
 import turtle
+import random
 
 t = turtle.Turtle(shape="turtle")
 
 t.lt(90)
 
-lv = 13
-l = 100
-s = 17
+lv = 10
+l = 120
 
 t.width(lv)
 
@@ -16,6 +16,8 @@ t.pendown()
 t.fd(l)
 
 def draw_tree(l, level):
+    s = random.choice(range(10, 30))
+
     width = t.width()  # save the current pen width
 
     t.width(width * 3.0 / 4.0)  # narrow the pen width
@@ -38,7 +40,7 @@ def draw_tree(l, level):
 
     t.width(width)  # restore the previous pen width
 
-t.speed("fastest")
+t.speed(0)
 
 draw_tree(l, 2)
 
