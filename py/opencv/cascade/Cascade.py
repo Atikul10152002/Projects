@@ -5,7 +5,7 @@ eye = cv2.CascadeClassifier("eye_cas.xml")
 face = cv2.CascadeClassifier("face_cas.xml")
 # smile = cv2.CascadeClassifier("smile_cas.xml")
 
-a = 0
+a:int = 0
 while 1:
     a += 1
     print(a)

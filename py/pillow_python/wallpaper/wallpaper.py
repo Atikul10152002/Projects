@@ -13,8 +13,8 @@ import random
 from termcolor import cprint
 
 
-DEFAULT_WALL_WIDTH = 1200
-DEFAULT_WALL_HEIGHT = 800
+DEFAULT_WALL_WIDTH = 458
+DEFAULT_WALL_HEIGHT = 813
 
 
 class DrawingInImage:
@@ -35,7 +35,7 @@ class DrawingInImage:
         self.height = int(sys.argv[2]) if 'scree_width' and 'screen_height' \
             in self.args.keys() else DEFAULT_WALL_HEIGHT
         self.repetition = int(
-            sys.argv[3]) if 'repetition' in self.args.keys() else 30
+            sys.argv[3]) if 'repetition' in self.args.keys() else 5
         self.box_width = 10
         self.box_height = 10
         self.im = Image.new('RGB',
@@ -114,7 +114,7 @@ if __name__ == '__main__':
             os.makedirs(walls_directory)
         filename = os.path.join(walls_directory, f'wall{wall_num}.png')
         cprint(str(f"{wall_num:05}") + "-"*(10-len(str(wall_num))) +
-               f'wall{wall_num}.png', color="grey")
+               f'wall{wall_num}.png', color="blue")
         putToScreen.save(filename)
 
     cprint(putToScreen.args, color='grey', attrs=["bold", "dark"])
