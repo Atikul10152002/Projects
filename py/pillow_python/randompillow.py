@@ -26,7 +26,7 @@ class Cools():
 
         # for wid in range(self._width):
         #     for hei in range(self._height):
-        #         self. draw.line([wid, hei, wid + choice([self.line_len, -self.line_len]), hei + choice([self.line_len, -self.line_len])],fill=self.pix[wid, hei], width=1)
+        #         self. draw.line([wid, hei, wid + choice([self.line_len,   -self.line_len]), hei + choice([self.line_len, -self.line_len])],fill=self.pix[wid, hei], width=1)
         self.imag.save(save_file_)
 
     def __repr__(self):
