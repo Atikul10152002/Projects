@@ -6,7 +6,7 @@ from PIL import Image
 
 class Filter_image():
     """
-    Filter_imag("626201613142.png")
+    Filter_imag("input.png")
     """
 
     def __init__(self, filename):
@@ -131,12 +131,12 @@ class Filter_image():
 
 def sample():
     filter_im = Filter_image(
-        "20180224_173418.jpg")
+        "input.jpg")
 
     # filter_im.show()
 
     filter_im.filter(
-        ["blacknwhite"], 0, 0,
+        ["inverse_pix",], 0, 0,
         filter_im.size[0], filter_im.size[1])
 
 
