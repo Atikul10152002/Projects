@@ -20,7 +20,7 @@ class neuralnet:
 
 neu = neuralnet()
 neu_inputs = array([[2,1],[3,1],[6,2],[10,2]])
-nue_outputs = array([[9,12,24,36]])
+nue_outputs = array([[2,3,12,20]])
 neu.train(neu_inputs,nue_outputs,10000)
 print(neu.weight)
 print(neu.think(array([8,2])))

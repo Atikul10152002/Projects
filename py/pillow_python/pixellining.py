@@ -18,7 +18,7 @@ class Cools():
         self.pix = self.image.load()
         self.size = self.image.size
 
-        self.line_len_factor: int = round(self.size[0]*.009)
+        self.line_len_factor: int = round(self.size[0]*.1)
         self.line_wid: int = 2
 
         # self.blank_image = self.image
@@ -65,5 +65,4 @@ class Cools():
         return f"Cools({self.filename})"
 
 
-llk = Cools("wallpaper/walls/wall9.png")
-# llk = Cools("input.png")
+llk = Cools("input.jpg")
