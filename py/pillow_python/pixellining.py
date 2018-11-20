@@ -19,7 +19,7 @@ class Cools():
         self.size = self.image.size
 
         self.line_len_factor: int = round(self.size[0]*.009)
-        self.line_wid: int = 1
+        self.line_wid: int = 2
 
         # self.blank_image = self.image
         self.blank_image = Image.new('RGB', (self.size[0], self.size[1]))
@@ -42,9 +42,9 @@ class Cools():
                             [width,
                              height,
                              round(
-                                 width + sum(self.pix[width, height])/self.line_len_factor) * math.cos(randint(0, 360)),
+                                 width + round(sum(self.pix[width, height])/self.line_len_factor) * math.cos(randint(0, 360))),
                              round(
-                                 height + sum(self.pix[width, height])/self.line_len_factor) * math.sin(randint(0, 360))],
+                                 height + round(sum(self.pix[width, height])/self.line_len_factor) * math.sin(randint(0, 360)))],
 
                             fill=self.pix[width, height],
                             width=self.line_wid
@@ -65,4 +65,5 @@ class Cools():
         return f"Cools({self.filename})"
 
 
-llk = Cools("input.png")
+llk = Cools("wallpaper/walls/wall9.png")
+# llk = Cools("input.png")
