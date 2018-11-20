@@ -15,8 +15,8 @@ from random import randint
 from termcolor import cprint
 
 
-DEFAULT_WALL_WIDTH = 458
-DEFAULT_WALL_HEIGHT = 813
+DEFAULT_WALL_WIDTH = 1280
+DEFAULT_WALL_HEIGHT = 800
 
 
 class DrawingInImage:
@@ -80,10 +80,10 @@ class DrawingInImage:
         self.y2_val = self.y_val + random.randrange(self.box_height)
         self.draw.polygon(
             [
-                random.choice([self.x_val, -self.x_val]),
-                random.choice([self.y_val, -self.y_val]),
-                random.choice([self.x2_val, -self.x2_val]),
-                random.choice([self.y2_val, -self.y2_val]),
+                random.choice([self.x_val*2, -self.x_val]),
+                random.choice([self.y_val*2, -self.y_val]),
+                random.choice([self.x2_val//2, -self.x2_val]),
+                random.choice([self.y2_val//2, -self.y2_val]),
                 random.choice([-self.y_val*2, self.y_val*2]),
                 random.choice([-self.x_val*2]),
                 random.choice([-self.y_val//2, self.y_val*2]),
@@ -95,7 +95,7 @@ class DrawingInImage:
                 round(random.randrange(0, 255))
             ))
 
-    def save(self):
+    def return_im(self):
         return self.im
 
 
@@ -109,11 +109,11 @@ class Cools():
         self.pix = self.image.load()
         self.size = self.image.size
 
-        self.line_len_factor: int = round(self.size[0]*.02)
+        self.line_len_factor: int = round(self.size[0]*.04)
         self.line_wid: int = 1
 
-        # self.blank_image = self.image
-        self.blank_image = Image.new('RGB', (self.size[0], self.size[1]))
+        self.blank_image = self.image
+        # self.blank_image = Image.new('RGB', (self.size[0], self.size[1]))
 
         self.draw = ImageDraw.Draw(self.blank_image)
 
@@ -129,7 +129,7 @@ class Cools():
                 list(
                     map(lambda height:
 
-                        self. draw.line(
+                        self.draw.line(
                             [width,
                              height,
                              round(
@@ -153,8 +153,12 @@ class Cools():
     def save(self, filename):
         self.blank_image.save(filename)
 
-current_wd = os.path.dirname(os.path.realpath(sys.argv[0]))
-walls_directory = os.path.join(current_wd, "walls")
+
+current_wd = "/Users/atikul/Pictures/Wallpapers"
+walls_directory = current_wd
+
+# current_wd = os.path.dirname(os.path.realpath(sys.argv[0]))
+# walls_directory = os.path.join(current_wd, "walls")
 
 
 if __name__ == '__main__':
@@ -165,7 +169,7 @@ if __name__ == '__main__':
         list(map(lambda x: putToScreen.drawPolygon(), range(putToScreen.repetition)))
 
         wall_num += 1
-        ckll = Cools(putToScreen.save())
+        ckll = Cools(putToScreen.return_im())
 
         if not os.path.exists(walls_directory):
             os.makedirs(walls_directory)
