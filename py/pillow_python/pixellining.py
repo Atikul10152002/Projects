@@ -1,7 +1,7 @@
+import math
 import time
 from random import randint
 from PIL import Image, ImageDraw
-import math
 
 save_file_: str = "upward.png"
 
@@ -18,8 +18,8 @@ class Cools():
         self.pix = self.image.load()
         self.size = self.image.size
 
-        self.line_len_factor: int = round(self.size[0]*.1)
-        self.line_wid: int = 2
+        self.line_len_factor: int = round(self.size[0]*.02)
+        self.line_wid: int = 1
 
         # self.blank_image = self.image
         self.blank_image = Image.new('RGB', (self.size[0], self.size[1]))
@@ -45,7 +45,6 @@ class Cools():
                                  width + round(sum(self.pix[width, height])/self.line_len_factor) * math.cos(randint(0, 360))),
                              round(
                                  height + round(sum(self.pix[width, height])/self.line_len_factor) * math.sin(randint(0, 360)))],
-
                             fill=self.pix[width, height],
                             width=self.line_wid
                         ),
@@ -56,8 +55,8 @@ class Cools():
             )
         )
 
-        print("List Comprehension finished in", str(
-            (time.time()-list_start_time)/60)[:4], " minutes")
+        print("List Comprehension finished in",
+              (time.time()-list_start_time))
 
         self.blank_image.save(save_file_)
 
@@ -65,4 +64,4 @@ class Cools():
         return f"Cools({self.filename})"
 
 
-llk = Cools("input.jpg")
+llk = Cools("input.png")
