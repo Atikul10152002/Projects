@@ -64,4 +64,4 @@ class Cools():
         return f"Cools({self.filename})"
 
 
-llk = Cools("input.png")
+llk = Cools("input.jpg")
