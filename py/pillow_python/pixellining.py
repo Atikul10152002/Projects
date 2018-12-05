@@ -57,11 +57,26 @@ class Cools():
 
         print("List Comprehension finished in",
               (time.time()-list_start_time))
-
+        self.finishing_touch()
         self.blank_image.save(save_file_)
 
     def __repr__(self):
         return f"Cools({self.filename})"
+
+    def finishing_touch(self):
+        data = list(self.blank_image.getdata())
+        for w in range(len(data)):
+            if w < len(data)-10 and w > 10 and sum(data[w]) < 5:
+                for i in range(10):
+                    if sum(data[w+i]) > 5:
+                        data[w] = data[w+i]
+                        break
+                    elif sum(data[w-i]) > 5:
+                        data[w] = data[w-i]
+                        break
+                    else:
+                        continue
+        self.blank_image.putdata(data)
 
 
 llk = Cools("input.jpg")
