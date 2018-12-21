@@ -1,3 +1,9 @@
-fn main() {
-    println!("Hello, world!");
+ 
+fn main(){
+    let x = "hello";
+    if true {
+        println!("{}", &x);
+        let x = ;
+        println!("{}", x);
+    };
 }
