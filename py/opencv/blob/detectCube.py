@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import hsv_val
 
-sliderEnabled = False
+sliderEnabled = 0
 
 def nothing(self):
  # empty function called by trackbars
@@ -48,7 +48,9 @@ class Calibrator:
                     cY = int(M["m01"]/M["m00"])
                 else:
                     cX, cY = 0, 0
+                #? Centroid center cicle
                 cv2.circle(frame, (cX, cY), 10, (159, 159, 255), -1)
+                #? Centroid sorrounding cicle
                 cv2.circle(frame, (cX, cY), R, (255, 0, 0), 5)
 
     def getContours(self, frame):
@@ -73,11 +75,14 @@ class Calibrator:
         # use greyscale (single channel) to remove blobs and draw contours
         grey = cv2.cvtColor(res, cv2.COLOR_BGR2GRAY)
         # blob removal
-        #kernel = np.ones((5,5),np.uint8)
+
+        kernel = np.ones((0,0),np.uint8)/25
+        # kernel = np.ones((cv2.getTrackbarPos(kernelSize, wnd) ,cv2.getTrackbarPos(kernelSize, wnd) ),np.uint8)/cv2.getTrackbarPos(kernelDivision, wnd) 
+
         #grey = cv2.erode(grey, kernel, iterations=1)
-        #grey = cv2.dilate(grey, kernel, iterations=1)
-        #grey = cv2.morphologyEx(grey, cv2.MORPH_OPEN, kernel)
-        #grey = cv2.morphologyEx(grey, cv2.MORPH_CLOSE, kernel)
+        grey = cv2.dilate(grey, kernel, iterations=1)
+        grey = cv2.morphologyEx(grey, cv2.MORPH_OPEN, kernel)
+        # grey = cv2.morphologyEx(grey, cv2.MORPH_CLOSE, kernel)
         contours = cv2.findContours(
             grey, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)[-2]
         return contours
@@ -126,6 +131,8 @@ vh = 'Value High'
 vl = 'Value Low'
 br = 'Blur'
 wnd = 'Colorbars'
+kernelSize = "kernel_size"
+kernelDivision = "kernel_division"
 
 # (bar name, window name, min , max, argument)
 if sliderEnabled:
@@ -135,6 +142,10 @@ if sliderEnabled:
     cv2.createTrackbar(sh, wnd, sh_start, 255, nothing)
     cv2.createTrackbar(vl, wnd, vl_start, 255, nothing)
     cv2.createTrackbar(vh, wnd, vh_start, 255, nothing)
+
+#? Testing with different values of denoising
+# cv2.createTrackbar(kernelSize, wnd, 0, 10, nothing)
+# cv2.createTrackbar(kernelDivision, wnd, 1, 25, nothing)
 
 frame_rate = 500 if sliderEnabled else 1
 while(1):
