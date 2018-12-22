@@ -153,11 +153,19 @@ while 1:
     # imgkeypoints = cv2.drawKeypoints(frame, keypoints, np.array(
         # []), (0, 255, 0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
 
+    contours = c.getContours(frame)
+    c.findPart(contours)
 
     key = cv2.waitKey(1)
     if key == ord("q"):
         break
 
+    # ? waitKey([, delay]) -> retval
+    # * The function waitKey waits for a key event infinitely or milliseconds, when the argument is positive
+    k = cv2.waitKey(5) & 0xFF
 
 video.release()
 cv2.destroyAllWindows()
+
+# ? Releases the Video Capture
+cap.release()
