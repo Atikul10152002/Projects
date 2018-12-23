@@ -4,19 +4,19 @@ import hsv_val
 
 sliderEnabled = True
 
-
 class cvPipeline:
     # * default color slider positions
-    hl_start = 0
-    hh_start = 255
-    sl_start = 0
-    sh_start = 255
-    vl_start = 0
-    vh_start = 255
-    value_max = 255
+    hueLowStart = 0
+    hueHighStart = 255
+    saturationLowStart = 0
+    saturationHighStart = 255
+    valueLowStart = 0
+    valueHighStart = 255
+    hsvValueMax = 255
+
     # * reduced frame rate to avoid lag issues of less powerful computers
-    frame_rate = 1
-    # frame_rate = 500 if sliderEnabled else 1
+    # framesPerSecond = 2 if sliderEnabled else 1
+    framesPerSecond = 60
 
     # * slider names
     hh = 'Hue High'
@@ -27,8 +27,8 @@ class cvPipeline:
     vl = 'Value Low'
     br = 'Blur'
     wnd = 'Colorbars'
-    kernelSize = "kernel_size"
-    kernelDivision = "kernel_division"
+    # kernelSize = "kernel_size"
+    # kernelDivision = "kernel_division"
 
     def __init__(self):
         # * windows for sliders
@@ -37,70 +37,75 @@ class cvPipeline:
 
         # ? (bar name, window name, min , max, argument)
         if sliderEnabled:
-            cv2.createTrackbar(self.hl, self.wnd, self.hl_start,
-                               self.value_max, self.nothing)
+            cv2.createTrackbar(self.hl, self.wnd, self.hueLowStart,
+                               self.hsvValueMax, self.nothing)
             cv2.createTrackbar(self.hh, self.wnd,
-                               self.hh_start, self.value_max, self.nothing)
+                               self.hueHighStart, self.hsvValueMax, self.nothing)
             cv2.createTrackbar(self.sl, self.wnd,
-                               self.sl_start, self.value_max, self.nothing)
+                               self.saturationLowStart, self.hsvValueMax, self.nothing)
             cv2.createTrackbar(self.sh, self.wnd,
-                               self.sh_start, self.value_max, self.nothing)
+                               self.saturationHighStart, self.hsvValueMax, self.nothing)
             cv2.createTrackbar(self.vl, self.wnd,
-                               self.vl_start, self.value_max, self.nothing)
+                               self.valueLowStart, self.hsvValueMax, self.nothing)
             cv2.createTrackbar(self.vh, self.wnd,
-                               self.vh_start, self.value_max, self.nothing)
+                               self.valueHighStart, self.hsvValueMax, self.nothing)
 
         # * Testing with different values to denoise
         # cv2.createTrackbar(kernelSize, wnd, 0, 10, nothing)
         # cv2.createTrackbar(kernelDivision, wnd, 1, 25, nothing)
 
-        self.cap = cv2.VideoCapture(1)
 
-    def run(self):
+    def run(self, video):
+        self.cap = video
+
         while(self.cap.isOpened()):
-            self._, self.frame = self.cap.read()
-            self.frame = cv2.flip(self.frame, 1)
+            try:
+                self._, self.frame = self.cap.read()
+                self.frame = cv2.flip(self.frame, 1)
 
-            # * resizing the frame to better fit the screen
-            self.frame = cv2.resize(self.frame,
-                                    (int(self.frame.shape[1]/2),
-                                     int(self.frame.shape[0]/2)))
+                # * resizing the frame to better fit the screen
+                self.frame = cv2.resize(self.frame,
+                                        (int(self.frame.shape[1]/2),
+                                        int(self.frame.shape[0]/2)))
 
-            # * read trackbar positions for each trackbar. The function returns the current position of the specified trackbar
-            # ? getTrackbarPos(trackbarname, winname) -> retval
-            hul = cv2.getTrackbarPos(
-                self.hl, self.wnd) if sliderEnabled else hsv_val.hul
-            huh = cv2.getTrackbarPos(
-                self.hh, self.wnd) if sliderEnabled else hsv_val.huh
-            sal = cv2.getTrackbarPos(
-                self.sl, self.wnd) if sliderEnabled else hsv_val.sal
-            sah = cv2.getTrackbarPos(
-                self.sh, self.wnd) if sliderEnabled else hsv_val.sah
-            val = cv2.getTrackbarPos(
-                self.vl, self.wnd) if sliderEnabled else hsv_val.val
-            vah = cv2.getTrackbarPos(
-                self.vh, self.wnd) if sliderEnabled else hsv_val.vah
+                # * read trackbar positions for each trackbar. The function returns the current position of the specified trackbar
+                # ? getTrackbarPos(trackbarname, winname) -> retval
+                hueLow = cv2.getTrackbarPos(
+                    self.hl, self.wnd) if sliderEnabled else hsv_val.hueLow
+                hueHigh = cv2.getTrackbarPos(
+                    self.hh, self.wnd) if sliderEnabled else hsv_val.hueHigh
+                saturationLow = cv2.getTrackbarPos(
+                    self.sl, self.wnd) if sliderEnabled else hsv_val.saturationLow
+                saturationHigh = cv2.getTrackbarPos(
+                    self.sh, self.wnd) if sliderEnabled else hsv_val.saturationHigh
+                valueLow = cv2.getTrackbarPos(
+                    self.vl, self.wnd) if sliderEnabled else hsv_val.valueLow
+                valueHigh = cv2.getTrackbarPos(
+                    self.vh, self.wnd) if sliderEnabled else hsv_val.valueHigh
 
-            self.contours = self.getContours(
-                self.frame, hul, huh, sal, sah, val, vah)
-            self.res = self.getImage(
-                self.frame, hul, huh, sal, sah, val, vah)
+                self.contours = self.getContours(
+                    self.frame, hueLow, hueHigh, saturationLow, saturationHigh, valueLow, valueHigh)
+                if sliderEnabled:
+                    self.res = self.getImage(
+                        self.frame, hueLow, hueHigh, saturationLow, saturationHigh, valueLow, valueHigh)
+                    #frame = c.cropFrame(cropped, frame)
+                    self.findPart(self.contours)
+                    cv2.imshow('res', self.res)
+                else:
+                    self.frame = self.getImage(
+                        self.frame, hueLow, hueHigh, saturationLow, saturationHigh, valueLow, valueHigh)
+                    #frame = c.cropFrame(cropped, frame)
+                    self.findPart(self.contours)
+                cv2.imshow(self.wnd, self.frame)
 
-            #frame = c.cropFrame(cropped, frame)
-            self.findPart(self.contours)
-
-            cv2.imshow(self.wnd, self.frame)
-            cv2.imshow('res', self.res)
-
-            key = cv2.waitKey(self.frame_rate) & 0xFF
-            if key == ord('s') and sliderEnabled:
-                self.writeHSV(hul, huh, sal, sah, val, vah)
-            if key == ord('q'):
-                break
-
-        cv2.destroyAllWindows()
-        self.cap.release()
-        # self.out.release()
+                key = cv2.waitKey(1000//self.framesPerSecond)
+                if key == ord('s') and sliderEnabled:
+                    self.writeHSV(hueLow, hueHigh, saturationLow, saturationHigh, valueLow, valueHigh)
+                if key == ord('q'):
+                    self.cap.release()
+                    break
+            except Exception as e:
+                print(e)
 
     def nothing(self, *a, **k):
         '''
@@ -108,7 +113,7 @@ class cvPipeline:
         '''
         pass
 
-    def writeHSV(self, hul, huh, sal, sah, val, vah):
+    def writeHSV(self, hueLow, hueHigh, saturationLow, saturationHigh, valueLow, valueHigh):
         '''
         writes calibrated hsv value of target to text file
         writeHSV(self) -> None
@@ -116,12 +121,12 @@ class cvPipeline:
 
         # * Appending the final HSV values to the `file`
         with open('hsv_val.py', 'a') as file:
-            file.write('hul = ' + str(hul) + '\n')
-            file.write('huh = ' + str(huh) + '\n')
-            file.write('sal = ' + str(sal) + '\n')
-            file.write('sah = ' + str(sah) + '\n')
-            file.write('val = ' + str(val) + '\n')
-            file.write('vah = ' + str(vah) + '\n')
+            file.write('hueLow = ' + str(hueLow) + '\n')
+            file.write('hueHigh = ' + str(hueHigh) + '\n')
+            file.write('saturationLow = ' + str(saturationLow) + '\n')
+            file.write('saturationHigh = ' + str(saturationHigh) + '\n')
+            file.write('valueLow = ' + str(valueLow) + '\n')
+            file.write('valueHigh = ' + str(valueHigh) + '\n')
 
             file.close()
 
@@ -135,9 +140,10 @@ class cvPipeline:
             # ? moments(array[, binaryImage]) -> retval
             # * The function computes moments, up to the 3rd order, of a vector shape or a rasterized shape. The results are returned in the structure cv: : Moments.
             self.M = cv2.moments(c)
+            #* Radius = sqrt(Area * Pi)
             self.R = int((self.A/3.14)**(.5))
             # ? change this value if target is smaller/larger
-            if self.A > 800:
+            if self.A > 10000:
 
                 # ? drawContours(image, contours, contourIdx, color[, thickness[, lineType[, hierarchy[, maxLevel[, offset]]]]]) -> image
                 cv2.drawContours(self.res, [c], -1, (0, 255, 0), 3)
@@ -150,11 +156,12 @@ class cvPipeline:
                 # ? circle(img, center, radius, color[, thickness[, lineType[, shift]]]) -> img
                 # * The function cv::circle draws a simple or filled circle with a given center and radius
                 # * Centroid center circle
+                # print("Blob center", cX,cY)
                 cv2.circle(self.frame, (cX, cY), 10, (159, 159, 255), -1)
                 # * Centroid surrounding circle
                 cv2.circle(self.frame, (cX, cY), self.R, (255, 0, 0), 5)
 
-    def getContours(self, frame, hul, huh, sal, sah, val, vah):
+    def getContours(self, frame, hueLow, hueHigh, saturationLow, saturationHigh, valueLow, valueHigh):
         '''
         analyzes video feed and finds contours
         getContours(self, frame) -> contours
@@ -166,8 +173,8 @@ class cvPipeline:
         self.hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
         # define range of mask
-        self.HSV_LOW = np.array([hul, sal, val])
-        self.HSV_HIGH = np.array([huh, sah, vah])
+        self.HSV_LOW = np.array([hueLow, saturationLow, valueLow])
+        self.HSV_HIGH = np.array([hueHigh, saturationHigh, valueHigh])
         # create a mask for that range
         self.mask = cv2.inRange(self.hsv, self.HSV_LOW, self.HSV_HIGH)
         self.res = cv2.bitwise_and(self.frame, self.frame, mask=self.mask)
@@ -192,7 +199,7 @@ class cvPipeline:
             self.grey, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)[-2]
         return self.contours
 
-    def getImage(self, frame, hul, huh, sal, sah, val, vah):
+    def getImage(self, frame, hueLow, hueHigh, saturationLow, saturationHigh, valueLow, valueHigh):
         '''
         applies mask using hsv trackbar values
         getImage(self, frame) -> res
@@ -204,8 +211,8 @@ class cvPipeline:
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
         # define range of mask
-        self.HSV_LOW = np.array([hul, sal, val])
-        self.HSV_HIGH = np.array([huh, sah, vah])
+        self.HSV_LOW = np.array([hueLow, saturationLow, valueLow])
+        self.HSV_HIGH = np.array([hueHigh, saturationHigh, valueHigh])
         # create a mask for that range
         self.mask = cv2.inRange(hsv, self.HSV_LOW, self.HSV_HIGH)
         self.res = cv2.bitwise_and(frame, frame, mask=self.mask)
@@ -213,4 +220,10 @@ class cvPipeline:
 
 
 cam = cvPipeline()
-cam.run()
+
+vidFeed = cv2.VideoCapture(1)
+cam.run(vidFeed)
+
+vidFeed.release()
+cv2.destroyAllWindows()
+# self.out.release()
