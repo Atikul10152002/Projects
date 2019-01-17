@@ -26,16 +26,19 @@ def main():
         if key == ord("q"):
             break
 
-    # cap.release()
+    # cap1.release()
+    # cap2.release()
     cv2.destroyAllWindows()
 
 
 def nothing(*a, **K): pass
 
 
-def prespectiveShift(img, bottomRange):
+def prespectiveShift(img):
     IMAGE_H, IMAGE_W = size(img)
-
+    bottomRange = 80
+    cv2.createTrackbar("bottomRange", window, bottomRange, 1000, nothing)
+    bottomRange = cv2.getTrackbarPos("bottomRange", window)
     src = np.array([[0, IMAGE_H], [IMAGE_W, IMAGE_H],
                     [0, 0], [IMAGE_W, 0]], dtype="float32")
     dst = np.array([[(IMAGE_W//2)-bottomRange, IMAGE_H], [(IMAGE_W//2)+bottomRange, IMAGE_H], [
@@ -73,20 +76,16 @@ def rotate(src, angle):
 
 def combineFrames(topView, leftView, bottomView, rightView):
 
-    bottomRange = 80
-    cv2.createTrackbar("bottomRange", window, bottomRange, 1000, nothing)
-    bottomRange = cv2.getTrackbarPos("bottomRange", window)
-
     # functions
-    topView = prespectiveShift(topView, bottomRange)
+    topView = prespectiveShift(topView)
 
-    leftView = prespectiveShift(leftView, bottomRange)
+    leftView = prespectiveShift(leftView)
     leftView = rotate(leftView, -90)
 
-    bottomView = prespectiveShift(bottomView, bottomRange)
+    bottomView = prespectiveShift(bottomView)
     bottomView = rotate(bottomView, 180)
 
-    rightView = prespectiveShift(rightView, bottomRange)
+    rightView = prespectiveShift(rightView)
     rightView = rotate(rightView, 90)
 
     # 4 channels
