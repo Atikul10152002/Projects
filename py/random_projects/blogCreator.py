@@ -1,10 +1,14 @@
-from tkinter import *
-import sys
+#! bin/bash python3
+from __future__ import print_function
+try:
+    from tkinter import *
+except:
+    print("tkinter not found. \nSearching for Tkinter")
+    from Tkinter import *
+    print("Found 'Tkinter'")
 
 window = Tk()
-
 window.title("Blogs")
-
 window.geometry('900x500')
 
 imgAdd_lbl = Label(window, text="Image Name :")
@@ -47,6 +51,7 @@ def getinfo():
     author = author.get()
     window.destroy()
 
+
 btn = Button(window, text="Done", command=getinfo,
              bg="orange", fg="red")
 btn.grid(column=0, row=9)
@@ -57,5 +62,5 @@ window.mainloop()
 
 print("\n"*2)
 
-print(f'''<!-- New Blog Post --> \n<div class="card mb-4">\n<img class="card-img-top" src="./img/blogs/{imgAdd}" alt="Card image cap">\n<div class="card-body">\n<h2 class="card-title">{title}</h2>\n<p class="card-text">{blog}</p>\n<!-- <a href="#" class="btn btn-primary">Read More &rarr;</a> -->\n</div>\n<div class="card-footer text-muted">\nPosted on {date} by <a href="javascript:void()">{author}</a>\n</div>\n</div>
- ''')
+print('''<!-- New Blog Post --> \n<div class="card mb-4">\n<img class="card-img-top" src="./img/blogs/{}" alt="Card image cap">\n<div class="card-body">\n<h2 class="card-title">{}</h2>\n<p class="card-text">{}</p>\n<!-- <a href="#" class="btn btn-primary">Read More &rarr;</a> -->\n</div>\n<div class="card-footer text-muted">\nPosted on {} by <a href="javascript:void()">{}</a>\n</div>\n</div>
+ '''.format(imgAdd, title, blog, date, author))
