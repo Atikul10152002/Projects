@@ -7,6 +7,8 @@ except:
     from Tkinter import *
     print("Found 'Tkinter'")
 
+
+
 window = Tk()
 window.title("Blogs")
 window.geometry('900x500')

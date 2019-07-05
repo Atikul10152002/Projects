@@ -8,13 +8,13 @@ from sys import argv
 from matplotlib import pyplot as plt
 
 template_image =cv2.imread('dot.jpg',0)
-url ='http://'+str(argv[1])+'/shot.jpg'
-user = str(argv[2])
-password = str(argv[3])
+# url ='http://'+str(argv[1])+'/shot.jpg'
+# user = str(argv[2])
+# password = str(argv[3])
 # data = urllib.parse.urlencode({ 'username': user,'password': password })
-# video = cv2.VideoCapture(0)
+video = cv2.VideoCapture(0)
 
-# img_rgb = sample_image.copy()
+img_rgb = sample_image.copy()
 template = template_image
 w, h = template.shape[::-1]
 
@@ -26,8 +26,8 @@ face = cv2.CascadeClassifier(
 eye = cv2.CascadeClassifier(
         'eye_cas.xml')
 while 1:
-    key = cv2.waitKey(1)
-    req = requests.get(url, auth=(user, password))
+    # key = cv2.waitKey(1)
+    # req = requests.get(url, auth=(user, password))
     # if key==ord("c"):
     # imgResp=urllib.request.urlopen(url, data)
     imgNp=np.array(bytearray(req.content),dtype=np.uint8)
