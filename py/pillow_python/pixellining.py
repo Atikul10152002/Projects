@@ -18,8 +18,8 @@ class Cools():
         self.pix = self.image.load()
         self.size = self.image.size
 
-        self.line_len_factor: int = round(self.size[0]*.02)
-        self.line_wid: int = 1
+        self.line_len_factor: int = round(self.size[0]*.002)
+        self.line_wid: int = 2
 
         # self.blank_image = self.image
         self.blank_image = Image.new('RGB', (self.size[0], self.size[1]))
@@ -79,4 +79,4 @@ class Cools():
         self.blank_image.putdata(data)
 
 
-llk = Cools("input.jpg")
+llk = Cools("output.png")

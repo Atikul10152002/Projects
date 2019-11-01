@@ -10,6 +10,7 @@ class Filter_image():
     """
 
     def __init__(self, filename):
+        print(filename)
         self.filename = filename
         self.imag =  self.im = Image.open(str(filename))
         self.pix = self.imag.load()

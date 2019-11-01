@@ -9,13 +9,14 @@ class Circles:
     """Circles("626201613142.png")"""
 
     def __init__(self, filename):
+        print(filename)
         self.filename = filename
         self.image = self.im = Image.open(str(filename))
         self.im = self.image.filter(ImageFilter.GaussianBlur(radius=10))
         self.pix = self.im.load()
         self.size = self.im.size
         self.line_wid: int = 1
-        self.circle_radius_factor = 30
+        self.circle_radius_factor = 20
         self.division = 3
         self.blank_image = self.image
         # self.blank_image = Image.new(
@@ -53,4 +54,4 @@ class Circles:
         print('List Comprehension finished in', time.time()-list_start_time)
 
 
-Circles('input.png')
+Circles('upward.png')
