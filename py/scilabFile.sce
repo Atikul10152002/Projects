@@ -129,7 +129,7 @@ for i = 1:length(w)
 //        clf(0);
 //        f=figure(0)
 //        f.background = -2
-//        plot(x,spatialdataplot,'g-')
+//        plot(x,steady_state,'g-')
 //        xlabel("Position (m)","fontsize",4)
 //        ylabel("Temperature (C)","fontsize",4)
 //        a = get("current_axes")

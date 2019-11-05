@@ -10,12 +10,12 @@ import numpy as np
 # (*Time and nodes*)
 nodesperlayer = 3  # Should be 2 or more, 3 is good.
 # Physical time between deposition of each new layer (seconds)
-layertime = [200]
+layertime = [200,100]
 # layertime = [10 40 70 100 120 150 200 250 300 375 450 600]
 cooldowntime = 30          # seconds
 timeskip = 1
 
-w = [0.02]                   # wall thickness (m)
+w = 0.02                   # wall thickness (m)
 layer = 0.004064           # layer height (m)
 layers = 10
 
@@ -196,37 +196,53 @@ def buildwall(nodesperlayer, w, layers, layer, layertime, cooldowntime, alpha, c
 # ------------------------------------------------
 # Run function
 # ------------------------------------------------
-fig = plt.figure()
-ax = fig.add_subplot(111)
-ax.set_xlabel("Time (min)")
-ax.set_ylabel("Temperature (C)")
+# fig = plt.figure()
+# ax = fig.add_subplot(111)
+fig, ax = plt.subplots()
+ax.set_xlabel("Time (min)", fontsize=15)
+ax.set_ylabel("Temperature (C)", fontsize=15)
+ax.title.set_text("Thermal Finite Difference Model by Dr. Comption")
 
-for i in range(1, len(w)+1):
-    for j in range(1, len(layertime)+1):
-        Tss, delx, delt, timepoints, cooldowntimepoints, spatialdataplot, timedataplot, timeskip = buildwall(
-            nodesperlayer, w[i-1], layers, layer, layertime[j-1], cooldowntime, alpha, c, rho, k, Tdep, Tinf, Tb, h, emissivity, counter1, counter2, u)
+# steady_state = np.empty((0, 2), np.float)
+# spatial_data_plot = np.empty((0, 1), np.float)
+# time_data_plot = np.empty((0, 1), np.float)
 
-        # steady_state[i-1, j-1] = Tss
+lenw = len(w) if isinstance(w, list) or isinstance(w, tuple) else 1
+lenlayertime = len(layertime) if isinstance(
+    layertime, list) or isinstance(layertime, tuple) else 1
+for i in range(lenw):
+    # steady_state = np.vstack(
+    #         [steady_state, np.zeros((1, lenlayertime))])
+    for j in range(lenlayertime):
+        w_temp = w[i] if isinstance(w, list) or isinstance(w, tuple) else w
+        layertime_temp = layertime[j] if isinstance(layertime, list) or isinstance(layertime, tuple) else layertime
+
+        Tss, delx, delt, timepoints, cooldowntimepoints, spatialdataplot, timedataplot, timeskip = buildwall(nodesperlayer, w_temp, layers, layer, layertime_temp, cooldowntime, alpha, c, rho, k, Tdep, Tinf, Tb, h, emissivity, counter1, counter2, u)
+
         # spatial_data_plot[:, :, j] = spatialdataplot
         # time_data_plot(:,:,j) = timedataplot;
-        counter1 = counter1 + 1
+
+        # steady_state[i,j] = Tss
 
         x = np.arange(delx, (layers*nodesperlayer*delx)+10**-10, delx)
 
         time = np.arange(
             0, ((layers*timepoints+cooldowntimepoints)*delt)+10**-10, timeskip*delt)
+
         ax.clear()
-        # ax.set_xlim([0,40])
-        # ax.set_ylim([-200,200])
-        for i in range(timedataplot.shape[1]):
-            ax.scatter(np.divide(time, 60),
-                       timedataplot[:, i], marker='s')
-        fig.savefig(f'3d-print-layer{str(i)+str(j)}.png')
+        for k in range(timedataplot.shape[1]):
+            plt.scatter(np.divide(time, 60),
+                        timedataplot[:, k], marker='s', s=10)
+        plt.savefig(
+            f'Analysis{"-w_"+str(w_temp)+"-layertime_"+str(layertime_temp)}.png')
+        print(
+            f'OK!\tAnalysis{"-w_"+str(w_temp)+"-layertime_"+str(layertime_temp)}.png Saved!')
+
+        plt.show()
 
     counter2 += 1
     counter1 = 1
 
-# plt.show()
 
 #------------------------------------------------
 # End function call
