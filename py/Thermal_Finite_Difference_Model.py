@@ -11,11 +11,12 @@ import numpy as np
 nodesperlayer = 3  # Should be 2 or more, 3 is good.
 # Physical time between deposition of each new layer (seconds)
 layertime = [200,100]
-# layertime = [10 40 70 100 120 150 200 250 300 375 450 600]
+# layertime = [10,40,70,100,120,150,200,250,300,375,450,600]
 cooldowntime = 30          # seconds
 timeskip = 1
 
-w = 0.02                   # wall thickness (m)
+w = [0.015,0.02]           # wall thickness (m)
+# w = [0.01,0.015,0.02]
 layer = 0.004064           # layer height (m)
 layers = 10
 
@@ -196,12 +197,7 @@ def buildwall(nodesperlayer, w, layers, layer, layertime, cooldowntime, alpha, c
 # ------------------------------------------------
 # Run function
 # ------------------------------------------------
-# fig = plt.figure()
-# ax = fig.add_subplot(111)
-fig, ax = plt.subplots()
-ax.set_xlabel("Time (min)", fontsize=15)
-ax.set_ylabel("Temperature (C)", fontsize=15)
-ax.title.set_text("Thermal Finite Difference Model by Dr. Comption")
+
 
 # steady_state = np.empty((0, 2), np.float)
 # spatial_data_plot = np.empty((0, 1), np.float)
@@ -229,20 +225,24 @@ for i in range(lenw):
         time = np.arange(
             0, ((layers*timepoints+cooldowntimepoints)*delt)+10**-10, timeskip*delt)
 
-        ax.clear()
+        fig = plt.figure(
+            num=f"Thermal Finite Difference Model ({'w='+str(w_temp)+',layertime='+str(layertime_temp)}) by Dr. Comption")
+        ax = fig.add_subplot(111)
+        ax.set_xlabel("Time (min)", fontsize=10)
+        ax.set_ylabel("Temperature (C)", fontsize=10)
         for k in range(timedataplot.shape[1]):
-            plt.scatter(np.divide(time, 60),
+            ax.scatter(np.divide(time, 60),
                         timedataplot[:, k], marker='s', s=10)
         plt.savefig(
             f'Analysis{"-w_"+str(w_temp)+"-layertime_"+str(layertime_temp)}.png')
         print(
             f'OK!\tAnalysis{"-w_"+str(w_temp)+"-layertime_"+str(layertime_temp)}.png Saved!')
-
-        plt.show()
+        # ax.clear()
 
     counter2 += 1
     counter1 = 1
 
+plt.show()
 
 #------------------------------------------------
 # End function call
