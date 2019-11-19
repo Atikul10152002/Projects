@@ -1,2 +1,3 @@
 # Projects
-PROJECTS
+
+Drafts fo projects with different languages.
