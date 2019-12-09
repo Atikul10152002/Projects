@@ -10,7 +10,7 @@ import numpy as np
 # (*Time and nodes*)
 nodesperlayer = 3  # Should be 2 or more, 3 is good.
 # Physical time between deposition of each new layer (seconds)
-layertime = [200,100]
+layertime = [100, 200]
 # layertime = [10,40,70,100,120,150,200,250,300,375,450,600]
 cooldowntime = 30          # seconds
 timeskip = 1
@@ -178,6 +178,7 @@ def buildwall(nodesperlayer, w, layers, layer, layertime, cooldowntime, alpha, c
     cooldownplotinc = 600  # seconds (10 minutes)
     temp = math.floor(cooldownplotinc/delt)
 
+
     spatialdataplot = np.swapaxes(
         Tnodes[np.concatenate(
             [np.arange(
@@ -193,7 +194,6 @@ def buildwall(nodesperlayer, w, layers, layer, layertime, cooldowntime, alpha, c
              ], axis=0), :], 0, 1)
     return Tss, delx, delt, timepoints, cooldowntimepoints, spatialdataplot, timedataplot, timeskip
 
-
 # ------------------------------------------------
 # Run function
 # ------------------------------------------------
@@ -206,21 +206,27 @@ def buildwall(nodesperlayer, w, layers, layer, layertime, cooldowntime, alpha, c
 lenw = len(w) if isinstance(w, list) or isinstance(w, tuple) else 1
 lenlayertime = len(layertime) if isinstance(
     layertime, list) or isinstance(layertime, tuple) else 1
+
+
+def plot(Tss, delx, delt, timepoints, cooldowntimepoints, spatialdataplot, timedataplot, timeskip):
+    pass
+
+
 for i in range(lenw):
-    # steady_state = np.vstack(
-    #         [steady_state, np.zeros((1, lenlayertime))])
+    # steady_state = np.vstack([steady_state, np.zeros((1, lenlayertime))])
     for j in range(lenlayertime):
         w_temp = w[i] if isinstance(w, list) or isinstance(w, tuple) else w
         layertime_temp = layertime[j] if isinstance(layertime, list) or isinstance(layertime, tuple) else layertime
 
-        Tss, delx, delt, timepoints, cooldowntimepoints, spatialdataplot, timedataplot, timeskip = buildwall(nodesperlayer, w_temp, layers, layer, layertime_temp, cooldowntime, alpha, c, rho, k, Tdep, Tinf, Tb, h, emissivity, counter1, counter2, u)
+        Tss, delx, delt, timepoints, cooldowntimepoints, spatialdataplot, timedataplot, timeskip = buildwall(
+            nodesperlayer, w_temp, layers, layer, layertime_temp, cooldowntime, alpha, c, rho, k, Tdep, Tinf, Tb, h, emissivity, counter1, counter2, u)
 
         # spatial_data_plot[:, :, j] = spatialdataplot
         # time_data_plot(:,:,j) = timedataplot;
 
         # steady_state[i,j] = Tss
 
-        x = np.arange(delx, (layers*nodesperlayer*delx)+10**-10, delx)
+        # x = np.arange(delx, (layers*nodesperlayer*delx)+10**-10, delx)
 
         time = np.arange(
             0, ((layers*timepoints+cooldowntimepoints)*delt)+10**-10, timeskip*delt)
@@ -230,14 +236,13 @@ for i in range(lenw):
         ax = fig.add_subplot(111)
         ax.set_xlabel("Time (min)", fontsize=10)
         ax.set_ylabel("Temperature (C)", fontsize=10)
-        for k in range(timedataplot.shape[1]):
-            ax.scatter(np.divide(time, 60),
-                        timedataplot[:, k], marker='s', s=10)
+        for t in range(timedataplot.shape[1]):
+            plt.scatter(np.divide(time, 60),
+                        timedataplot[:, t], marker='s', s=10)
         plt.savefig(
             f'Analysis{"-w_"+str(w_temp)+"-layertime_"+str(layertime_temp)}.png')
         print(
             f'OK!\tAnalysis{"-w_"+str(w_temp)+"-layertime_"+str(layertime_temp)}.png Saved!')
-        # ax.clear()
 
     counter2 += 1
     counter1 = 1
