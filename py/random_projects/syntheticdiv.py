@@ -3,6 +3,7 @@ import sys
 
 ans = []
 
+
 def syn(fac, _iter):
     print("#"*10)
     print(int(_iter[0]))
@@ -14,5 +15,9 @@ def syn(fac, _iter):
         else:
             print((lastval*fac)+obj)
         lastval = (lastval*fac)+obj
-        
-syn(int(sys.argv[1]), sys.argv[2:])
+
+
+if len(sys.argv)>1:
+    syn(int(sys.argv[1]), sys.argv[2:])
+else:
+    print("\n\nPlease enter filename follwed by divisor, and coefficients")

@@ -1,7 +1,0 @@
-Set-ExecutionPolicy RemoteSigned -scope CurrentUser
-iwr -useb get.scoop.sh | iex
-scoop install git
-scoop install python
-(New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/atikul99/prog_lang/master/py/Thermal_Finite_Difference_Model.py') >> Thermal_Finite_Difference_Model.py
-pip3 install matplotlib
-python3 Thermal_Finite_Difference_Model.py

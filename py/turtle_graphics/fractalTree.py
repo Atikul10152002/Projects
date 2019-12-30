@@ -16,17 +16,12 @@ t.pendown()
 t.fd(l)
 
 def draw_tree(l, level):
-    s = random.choice(range(10, 30))
-
+    s = random.choice(range(15, 25))
     width = t.width()  # save the current pen width
-
     t.width(width * 3.0 / 4.0)  # narrow the pen width
-
     l = 3.0 / 4.0 * l
-
     t.lt(s)
     t.fd(l)
-
     if level < lv:
         draw_tree(l, level + 1)
     t.bk(l)
