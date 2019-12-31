@@ -1,19 +1,17 @@
 #!/usr/bin/env python3
 
-import cv2
+import cv2, os
 
-face = cv2.CascadeClassifier(
-    '/Users/abir/Github/prog_lang/py/vision/face_cas.xml')
-eye = cv2.CascadeClassifier(
-    '/Users/abir/Github/prog_lang/py/vision/eye_cas.xml')
+fileDir = os.path.dirname(os.path.abspath(__file__))
+face = cv2.CascadeClassifier(os.path.join(fileDir, 'face_cas.xml'))
+eye = cv2.CascadeClassifier(os.path.join(fileDir, 'eye_cas.xml'))
 
 cap = cv2.VideoCapture(0)
 
 while 1:
     ret, frame = cap.read()
-    if ret:
+    if ret and frame is not None:
         # -- Detect faces
-
         faces = face.detectMultiScale(frame)
         for (x, y, w, h) in faces:
             center = (x + w//2, y + h//2)
