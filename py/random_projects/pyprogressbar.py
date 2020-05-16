@@ -27,7 +27,6 @@ def progress(current: int, total: int = 100, _len: int = 50):
     bar = "=" * filled + "-" * (int(_len - filled))
     sys.stdout.write(f"[{bar}]\r")
     sys.stdout.flush()
-
     if current == total:
         sys.stdout.write("\nDone!\r\n")
         sys.stdout.flush()
@@ -42,7 +41,6 @@ if __name__ == "__main__":
     total = 100
     num = 0
     while 1:
-
         time.sleep(.05)
         progress(num, total, 10)
         if num >= total:

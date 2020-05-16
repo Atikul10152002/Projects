@@ -114,11 +114,7 @@ numbers = [
 ]
 
 
-try:
-    os.system("clear")
-except:
-    os.system("clear")
-
+os.system("clear")
 CORRECT_MESSAGE = "\n"*5 + "."*10 + \
     "\n?Correcto!\nBuen trabajo\n" + "."*10 + "\n"*5
 WRONG_MESSAGE = "\n"*5 + "?Incorrecto!" + "\n"*5
@@ -126,25 +122,18 @@ WRONG_MESSAGE = "\n"*5 + "?Incorrecto!" + "\n"*5
 while True:
     qnum = random.choice(numbers)
     question = "what is \"{}\" in English? >> ".format(qnum[0])
-
     player = input(question)
-
     if "q" in player.lower() or "quit" in player.lower():
         sys.exit()
     elif player == qnum[1]:
         cprint(CORRECT_MESSAGE, color="green")
     else:
         print("\n#HINT#")
-        hints = [qnum[1],
-                 random.choice(numbers)[1]]
-
+        hints = [qnum[1], random.choice(numbers)[1]]
         hint1 = random.choice([0, 1])
-
         hint2 = 0 if hint1 is 1 else 1
         player = input("Is it {} or {}? >> ".format(hints[hint1],
-                                                    hints[hint2])
-                       )
-
+                                                    hints[hint2]))
         if "q" in player.lower() or "quit" in player.lower():
             sys.exit()
         elif player == qnum[1]:

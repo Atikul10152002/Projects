@@ -52,7 +52,7 @@ def closest_node(node, nodes, num=1):
 
 def main():
     """
-    This is our main program.
+    main program.
     """
     pygame.init()
 
@@ -93,9 +93,9 @@ def main():
         # --- Logic
         ball_points = []
         for ball in ball_list:
-            if abs(ball.change_x) > 9:
+            if abs(ball.change_x) > 5:
                 ball.change_x = random.choice([-1, 1])
-            if abs(ball.change_y) > 9:
+            if abs(ball.change_y) > 5:
                 ball.change_y = random.choice([-1, 1])
             ball_points.append([int(ball.x), int(ball.y)])
             # Move the ball's center
@@ -126,18 +126,15 @@ def main():
                 pygame.draw.line(screen, ball.color, ball_points[pnts[line]], [
                     int(ball.x), int(ball.y)], 1)
 
-
-
         for _ in range(2):
             random.choice(ball_list).change_x += random.random() * \
                 random.choice([-1, 1])
             random.choice(ball_list).change_y += random.random() * \
                 random.choice([-1, 1])
-        # --- Wrap-up
+
         # Limit to 60 frames per second
         clock.tick(60)
 
-        # Go ahead and update the screen with what we've drawn.
         pygame.display.update()
 
     # Close everything down

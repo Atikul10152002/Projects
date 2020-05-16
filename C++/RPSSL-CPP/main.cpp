@@ -10,7 +10,7 @@
   - Scissors cuts Paper, decapitates Lizard
   - Lizard poisons Spock, eats Paper
   - Spock smashes Scissors, vaporizes Rock
-  
+
 */
 
 #include <iostream>
@@ -33,7 +33,7 @@ int main()
   game is made to be played against the COMPUTER. \n* The COMPUTER input is\
   fully random \n\n\nThe winner is CHOSEN by the follwing rules \n- Rock blunts\
   Scissors, and Lizard \n- Paper covers Rock, disproves Spock \n- Scissors cuts\
-  Paper, decapitates Lizard \n- Lizard piosons Spock, eats Paper \n- Spock smashes\
+  Paper, decapitates Lizard \n- Lizard poisons Spock, eats Paper \n- Spock smashes\
   Scissors, vaporizes Rock\n***\nPress \'q\' and \'Enter\' in any point to exit the game...\
   \n ___     ___     ___    \
   \n \\  \\    \\  \\    \\  \\   \
@@ -46,7 +46,7 @@ int main()
   game();
 }
 
-// defination of the whole game
+// definition of the whole game
 static string stop = "n";
 
 void game()
@@ -66,7 +66,7 @@ void game()
     {
       string PLAYER = playerIfelse(p_choice);
 
-      // computer random choise
+      // computer random choice
       string COMPUTER = computerIfelse(rand() % 5);
 
       // Result
@@ -192,32 +192,32 @@ string outcomeIfelse(string PLAYER, string COMPUTER)
 
   // player wins
   else if (
-      PLAYER == "Rock" && COMPUTER == "Scissors" ||
-      PLAYER == "Rock" && COMPUTER == "Lizard" ||
-      PLAYER == "Paper" && COMPUTER == "Rock" ||
-      PLAYER == "Paper" && COMPUTER == "Spock" ||
-      PLAYER == "Scissors" && COMPUTER == "Paper" ||
-      PLAYER == "Scissors" && COMPUTER == "Lizard" ||
-      PLAYER == "Lizard" && COMPUTER == "Paper" ||
-      PLAYER == "Lizard" && COMPUTER == "Rock" ||
-      PLAYER == "Spock" && COMPUTER == "Rock" ||
-      PLAYER == "Spock" && COMPUTER == "Scissors")
+     ( PLAYER == "Rock" && COMPUTER == "Scissors") ||
+      (PLAYER == "Rock" && COMPUTER == "Lizard") ||
+      (PLAYER == "Paper" && COMPUTER == "Rock") ||
+      (PLAYER == "Paper" && COMPUTER == "Spock") ||
+      (PLAYER == "Scissors" && COMPUTER == "Paper") ||
+      (PLAYER == "Scissors" && COMPUTER == "Lizard") ||
+      (PLAYER == "Lizard" && COMPUTER == "Paper") ||
+      (PLAYER == "Lizard" && COMPUTER == "Rock") ||
+      (PLAYER == "Spock" && COMPUTER == "Rock") ||
+      (PLAYER == "Spock" && COMPUTER == "Scissors"))
   {
     OUTCOME = "PLAYER wins!";
   }
 
   // computer wins
   else if (
-      PLAYER == "Rock" && COMPUTER == "Paper" ||
-      PLAYER == "Rock" && COMPUTER == "Spock" ||
-      PLAYER == "Paper" && COMPUTER == "Scissors" ||
-      PLAYER == "Paper" && COMPUTER == "Lizard" ||
-      PLAYER == "Scissors" && COMPUTER == "Rock" ||
-      PLAYER == "Scissors" && COMPUTER == "Spock" ||
-      PLAYER == "Lizard" && COMPUTER == "Scissors" ||
-      PLAYER == "Lizard" && COMPUTER == "Spock" ||
-      PLAYER == "Spock" && COMPUTER == "Paper" ||
-      PLAYER == "Spock" && COMPUTER == "Lizard")
+      (PLAYER == "Rock" && COMPUTER == "Paper" )||
+      (PLAYER == "Rock" && COMPUTER == "Spock" )||
+      (PLAYER == "Paper" && COMPUTER == "Scissors" )||
+      (PLAYER == "Paper" && COMPUTER == "Lizard" )||
+      (PLAYER == "Scissors" && COMPUTER == "Rock" )||
+      (PLAYER == "Scissors" && COMPUTER == "Spock" )||
+      (PLAYER == "Lizard" && COMPUTER == "Scissors" )||
+      (PLAYER == "Lizard" && COMPUTER == "Spock" )||
+      (PLAYER == "Spock" && COMPUTER == "Paper" )||
+      (PLAYER == "Spock" && COMPUTER == "Lizard"))
   {
     OUTCOME = "COMPUTER wins!";
   }
